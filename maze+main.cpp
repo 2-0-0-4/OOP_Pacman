@@ -1,8 +1,11 @@
+//g++ maze+main.cpp -I"C:\mingw_dev_lib\include" -L"C:\mingw_dev_lib\lib" -lsfml-graphics -lsfml-window -lsfml-system -o main.exe
+
 #pragma once
 #include <array>
 #include <iostream>
 #include <SFML/Graphics.hpp>
 #include <chrono>
+#include "character.cpp"
 
 constexpr unsigned char CELL_SIZE=16;
 constexpr unsigned char MAP_H=21;
@@ -115,8 +118,18 @@ int main()
 
     // get the current time and store it in a variable.
     previous_time = std::chrono::steady_clock::now();
-
+    
+    
+    Character man;
+    window.setFramerateLimit(11);
     while (window.isOpen()) {
+        sf::Event event;
+        while (window.pollEvent(event)) {
+            if (event.type == sf::Event::Closed)
+            window.close();
+            break;
+
+        }
         // we're calculating the lag here
         unsigned delta_time = std::chrono::duration_cast<std::chrono::microseconds>(std::chrono::steady_clock::now() - previous_time).count();
         lag += delta_time;
@@ -139,10 +152,12 @@ int main()
 
             // add the rest of the stuff here
 
-            window.clear();
+        }
+            man.draw(window);
+            man.movement();
             draw_maze(maze, window);  // Draw the map
             window.display();
-        }
+            window.clear();
     }
 
     return 0;

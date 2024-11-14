@@ -6,13 +6,13 @@
 class Character{
     protected:
         sf::RectangleShape player;
-        sf::Vector2f position = {200,150};
-        int speed = 1;
+        sf::Vector2f position = {160,128};
+        int speed = 16;
 
     public:
         void draw(sf::RenderWindow &temp){
-            sf::RectangleShape player(sf::Vector2f(10.f, 10.f));
-            player.setFillColor(sf::Color::Green);
+            sf::RectangleShape player(sf::Vector2f(16, 16));
+            player.setFillColor(sf::Color::White);
             player.setPosition(position.x, position.y);
             temp.draw(player);
 
@@ -69,23 +69,23 @@ class Pacman : public Character{
 
 
 
-int main(){
-    sf::RenderWindow window(sf::VideoMode(400, 300), "Hit or Miss Ball");
-    Character man;
-    window.setFramerateLimit(60);
+// int main(){
+//     sf::RenderWindow window(sf::VideoMode(400, 300), "Hit or Miss Ball");
+//     Character man;
+//     window.setFramerateLimit(60);
     
-    while (window.isOpen()) {
-        sf::Event event;
-        while (window.pollEvent(event)) {
-            if (event.type == sf::Event::Closed)
-            window.close();
-        }
-        man.draw(window);
-        man.movement();
-        man.respawn();
-        // Display the contents
-        window.display();
-        window.clear();
-    }
-}
+//     while (window.isOpen()) {
+//         sf::Event event;
+//         while (window.pollEvent(event)) {
+//             if (event.type == sf::Event::Closed)
+//             window.close();
+//         }
+//         man.draw(window);
+//         man.movement();
+//         man.respawn();
+//         // Display the contents
+//         window.display();
+//         window.clear();
+//     }
+// }
 
