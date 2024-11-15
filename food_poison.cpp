@@ -22,12 +22,13 @@ void Food::remove_from_array(int x, int y){
     }
 }
 
-void Food::draw(sf::RenderWindow &temp){
-    std::vector <int> coord {0,0};
-    for (coord : locations){
-        sf::RectangleShape food_circle(sf::Vector2f(16, 16));
-        food_circle.setFillColor(sf::Color::Blue);
-        food_circle.setPosition(position.x, position.y);
+void Food::draw(sf::RenderWindow &temp, sf::Color circle_color){ //draws all food circles at the given locations stored in the array locations
+    for (std::vector <int> location: locations){ //gets location of each food
+        sf::CircleShape food_circle(3.f);
+        food_circle.setFillColor(circle_color);
+        food_circle.setPosition((location[0]*16)+5,(location[1]*16)+5);
         temp.draw(food_circle);
     }
 }
+
+Food::~Food(){};

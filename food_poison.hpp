@@ -7,6 +7,7 @@ class Food {
     protected:
         std::vector<std::vector<int>> locations{};
     public:
+        void draw(sf::RenderWindow &temp, sf::Color circle_color);
         void add_to_array(int x, int y);
         void remove_from_array(int x, int y);
         virtual ~Food() = 0;
