@@ -120,7 +120,7 @@ int main()
     previous_time = std::chrono::steady_clock::now();
     
     
-    Character man;
+    Pacman man;
     window.setFramerateLimit(11);
     while (window.isOpen()) {
         sf::Event event;
