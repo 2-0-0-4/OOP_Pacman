@@ -2,18 +2,22 @@
 #define CHARACTER_H
 
 #include <SFML/Graphics.hpp>
+#include "Maze.hpp"
 #include <iostream>
+
 
 // Base class: Character
 class Character {
 protected:
-    sf::RectangleShape player; // Represents the character shape
+    sf::CircleShape player; // Represents the character shape
     sf::Vector2f position = {160, 128}; // Initial position
-    int speed = 16; // Movement speed
+    int speed = 1; // Movement speed
+    int direction=0; //which direction its gonna go in
 
 public:
     void draw(sf::RenderWindow &temp);
     virtual void respawn();
+    bool wall_collision(int pos_x, int pos_y, int MAP_W, int MAP_H, const Maze& maze);
 };
 
 // Derived class: Pacman
@@ -24,7 +28,7 @@ private:
 
 public:
     void increase_lives();
-    void movement();
+    void movement(const Maze &maze);
     void died();
 };
 
