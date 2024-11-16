@@ -4,7 +4,7 @@
 #include <SFML/Graphics.hpp>
 #include <chrono>
 #include "character.hpp"
-#include "food_poison.hpp"
+#include "FoodPoison.hpp"
 #include "Wall.cpp"
 
 void Maze::draw_maze(int MAP_W, int MAP_H,sf::RenderWindow& i_window){
@@ -18,7 +18,7 @@ void Maze::draw_maze(int MAP_W, int MAP_H,sf::RenderWindow& i_window){
                 }
                 else if(maze_sketch[j][i] == "."){ //health
                     temp_health.add_to_array(i,j);
-                    temp_health.draw(i_window,sf::Color::Yellow);
+                    temp_health.draw(i_window,sf::Color::Green);
                 }
                 else if(maze_sketch[j][i] == "x"){ //poison
                     temp_poison.add_to_array(i,j);
@@ -28,4 +28,3 @@ void Maze::draw_maze(int MAP_W, int MAP_H,sf::RenderWindow& i_window){
                 
         }
 }
-
