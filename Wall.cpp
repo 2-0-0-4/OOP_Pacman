@@ -13,7 +13,7 @@ class Wall{
 public:
     void draw(sf::RenderWindow &temp, int x_coord, int y_coord){
         sf::RectangleShape wall(sf::Vector2f(16, 16));
-        wall.setFillColor(sf::Color::White);
+        wall.setFillColor(sf::Color::Blue);
         wall.setPosition(x_coord*16, y_coord*16);
         temp.draw(wall);
     }
