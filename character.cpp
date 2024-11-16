@@ -1,42 +1,42 @@
 //g++ character.cpp -I"C:\mingw_dev_lib\include" -L"C:\mingw_dev_lib\lib" -lsfml-graphics -lsfml-window -lsfml-system -o main.exe
 #include <SFML/Graphics.hpp>
 #include <iostream>
+#include "character.hpp"
 
+// class Character{
+//     protected:
+//         sf::RectangleShape player;
+//         sf::Vector2f position = {160,128};
+//         int speed = 16;
 
-class Character{
-    protected:
-        sf::RectangleShape player;
-        sf::Vector2f position = {160,128};
-        int speed = 16;
-
-    public:
-        void draw(sf::RenderWindow &temp){
+//     public:
+        void Character::draw(sf::RenderWindow &temp){
             sf::RectangleShape player(sf::Vector2f(16, 16));
             player.setFillColor(sf::Color::Blue);
             player.setPosition(position.x, position.y);
             temp.draw(player);
 
         }
-        void respawn(){
+        void Character::respawn(){
                 //position = {200,150};
             }
-} ;
+// } ;
 
 
-class Pacman : public Character{
-    private:
-        int lives = 3;
-    public:
-        // void increase_speed(){
-        //     speed = 3;
-        // }
-        void increase_lives(){
+// class Pacman : public Character{
+//     private:
+//         int lives = 3;
+//     public:
+//         // void increase_speed(){
+//         //     speed = 3;
+//         // }
+        void Pacman::increase_lives(){
             if (lives < 3){
                 lives += 1;
             }
         }
 
-        void movement(){
+        void Pacman::movement(){
             sf::Vector2f index;
             index.x = position.x/16;
             index.y = position.y/16; 
@@ -65,7 +65,7 @@ class Pacman : public Character{
             
         }
 
-        void died(){
+        void Pacman::died(){
             if (lives == 0){
                 std::cout << "game over!" << std::endl;
             }
@@ -74,7 +74,7 @@ class Pacman : public Character{
                 respawn();
             }
         }   
-};
+
 
 
 

@@ -31,4 +31,8 @@ void Food::draw(sf::RenderWindow &temp, sf::Color circle_color){ //draws all foo
     }
 }
 
+bool Food::is_empty(){
+    return locations.empty();
+};
+
 Food::~Food(){};

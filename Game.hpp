@@ -1,8 +1,23 @@
+#ifndef GAME_HPP
+#define GAME_HPP
 #include <SFML/Graphics.hpp>
 #include "character.hpp"
+#include "Maze.hpp"
+#include <chrono>
+#pragma once
+
 class Game{
     private:
-        //initlaise character, maze, ghosts EVETRTHING here
+        
+        const unsigned char CELL_SIZE = 16;
+        const int MAP_H = 21;
+        const int MAP_W = 21;
+        const unsigned char SCREEN_RESIZE = 2;
+        const unsigned short FRAME = 16667;
+        Pacman pacman;
+        Maze pacman_maze;
+        
+
     public:
         Game(); 
         ~Game(); 
@@ -13,3 +28,5 @@ class Game{
         //IF IN THE FUTURE WE WANT SOUNDS ETC TO BE PLAYED. WE WILL MAKE FUCNTIONS HERE TO ADD THOSE
 
 };
+
+#endif
