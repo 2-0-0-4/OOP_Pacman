@@ -25,7 +25,7 @@ void Game::init(){
     
     
     Pacman man;
-    window.setFramerateLimit(11);
+    window.setFramerateLimit(100);
     while (window.isOpen()) {
         sf::Event event;
         while (window.pollEvent(event)) {
@@ -57,8 +57,9 @@ void Game::init(){
             // add the rest of the stuff here
 
         }
+            Maze maze;
             man.draw(window);
-            man.movement();
+            man.movement(maze);
             pacman_maze.draw_maze(MAP_H,MAP_W,window);  // Draw the map
             window.display();
             window.clear();
