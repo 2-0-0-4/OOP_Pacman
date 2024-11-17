@@ -4,7 +4,7 @@
 #include <SFML/Graphics.hpp>
 #include <chrono>
 #include "character.hpp"
-#include "FoodPoison.hpp"
+#include "food_poison.hpp"
 #include "Wall.cpp"
 
 void Maze::draw_maze(int MAP_W, int MAP_H,sf::RenderWindow& i_window){
