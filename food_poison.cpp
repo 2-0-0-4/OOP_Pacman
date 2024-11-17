@@ -2,7 +2,7 @@
 using namespace sf;
 #include "food_poison.hpp"
 #include <iostream>
-
+ 
 void Food::add_to_array(int x, int y){
     locations.push_back({x, y});
 }

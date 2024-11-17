@@ -22,11 +22,11 @@ public:
 
 // Derived class: Pacman
 class Pacman : public Character {
-
 private:
     int lives = 3; // Number of lives Pacman has
 
 public:
+    void draw_lives(sf::RenderWindow &temp);
     void increase_lives();
     void movement(Maze &maze, Health& temp_health, Poison& temp_poison);
     void died();
