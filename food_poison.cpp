@@ -17,6 +17,7 @@ void Food::remove_from_array(int x, int y){
     // If found, remove it
     if (it != locations.end()) {
         locations.erase(it);
+        std::cout<<"erased"<<std::endl;
     } else {
         std::cout << "Element {" << x << ", " << y << "} not found in locations.\n";
     }
@@ -36,3 +37,20 @@ bool Food::is_empty(){
 };
 
 Food::~Food(){};
+
+void Food::print(){
+    for (const auto& row : locations) {
+        for (const auto& elem : row) {
+            std::cout << elem << " "; // Print each element in the row
+        }
+        std::cout << std::endl; // Newline after each row
+    }
+}
+
+bool Food::find_in_array(int x, int y){
+    std::vector<int> target = {x, y};
+
+    // Find the target vector in the locations array
+    auto it = std::find(locations.begin(), locations.end(), target);
+    return it != locations.end();
+}

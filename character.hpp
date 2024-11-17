@@ -28,7 +28,7 @@ private:
 
 public:
     void increase_lives();
-    void movement(const Maze &maze);
+    void movement(Maze &maze, Health& temp_health, Poison& temp_poison);
     void died();
 };
 

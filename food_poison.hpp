@@ -10,8 +10,10 @@ class Food {
         void draw(sf::RenderWindow &temp, sf::Color circle_color);
         void add_to_array(int x, int y);
         void remove_from_array(int x, int y);
+        bool find_in_array(int x, int y);
         bool is_empty();
         virtual ~Food() = 0;
+        void print();
 
 };
 

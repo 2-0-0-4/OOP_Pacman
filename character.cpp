@@ -94,7 +94,7 @@
             }
         }
 
-        void Pacman::movement(const Maze &maze){
+        void Pacman::movement(Maze &maze, Health &temp_health, Poison &temp_poison){
 
             
                 sf::Vector2f index;
@@ -162,6 +162,15 @@
                         break;
                     }
                 }
+            }
+            if(maze.maze_sketch[position.y/16][position.x/16] == "."){ //health is there
+                maze.maze_sketch[position.y/16][position.x/16] = " ";
+                temp_health.remove_from_array(position.x/16,position.y/16);
+                std::cout<<"here"<<std::endl;
+            }
+            
+            if(maze.maze_sketch[position.y/16][position.x/16] == "x"){ //poison is there
+                temp_poison.remove_from_array(position.x/16,position.y/16);
             }
             // 16 is our cells size and 21 is the width of our maze.
             if (-16> position.x)

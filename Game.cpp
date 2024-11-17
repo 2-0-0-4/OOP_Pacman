@@ -24,8 +24,9 @@ void Game::init(){
     previous_time = std::chrono::steady_clock::now();
     
     
-    Pacman man;
+    // Pacman man;
     window.setFramerateLimit(100);
+    pacman_maze.draw_maze(MAP_H,MAP_W,healths,poisons,window,true);  // Draw the map
     while (window.isOpen()) {
         sf::Event event;
         while (window.pollEvent(event)) {
@@ -57,12 +58,23 @@ void Game::init(){
             // add the rest of the stuff here
 
         }
-            Maze maze;
+           
             man.draw(window);
-            man.movement(maze);
-            pacman_maze.draw_maze(MAP_H,MAP_W,window);  // Draw the map
+            pacman_maze.draw_maze(MAP_H,MAP_W,healths,poisons,window,false);  // Draw the map
+            man.movement(pacman_maze,healths,poisons);
+            // healths.draw(window,sf::Color::Green);
+            // poisons.draw(window,sf::Color::Red);
+            // healths.print();
+            // poisons.print();
             window.display();
             window.clear();
+            update(window);
     }
+}
 
+void Game::update(sf::RenderWindow& window){
+    // pacman_maze.draw_maze(MAP_H,MAP_W,healths,poisons,window);  // Draw the map
+    // std::cout<<"update"<<std::endl;
+    healths.draw(window,sf::Color::Green);
+    poisons.draw(window,sf::Color::Red);
 }
