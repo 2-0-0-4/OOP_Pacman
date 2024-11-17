@@ -27,7 +27,7 @@ void Food::draw(sf::RenderWindow &temp, sf::Color circle_color){ //draws all foo
         sf::CircleShape food_circle(3.f);
         food_circle.setFillColor(circle_color);
         food_circle.setPosition((location[0]*16)+5,(location[1]*16)+5);
-        temp.draw(food_circle);
+        temp.draw(food_circle); 
     }
 }
 

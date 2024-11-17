@@ -12,9 +12,9 @@ void Game::init(){
     // SFML thing. Stores events, I think.
     sf::Event event;
 
-    sf::RenderWindow window(sf::VideoMode(CELL_SIZE * MAP_W * SCREEN_RESIZE, (40 + CELL_SIZE * MAP_H) * SCREEN_RESIZE ), "Pac-Man", sf::Style::Close);
+    sf::RenderWindow window(sf::VideoMode(CELL_SIZE * MAP_W * SCREEN_RESIZE, (30 + CELL_SIZE * MAP_H) * SCREEN_RESIZE ), "Pac-Man", sf::Style::Close);
     // making the window to fit the maze
-    window.setView(sf::View(sf::FloatRect(0, 0, CELL_SIZE * MAP_W, 40 + CELL_SIZE * MAP_H )));
+    window.setView(sf::View(sf::FloatRect(0, 0, CELL_SIZE * MAP_W, 30 + CELL_SIZE * MAP_H )));
 
     // generating a random seed.
     srand(static_cast<unsigned>(time(0)));
@@ -77,4 +77,5 @@ void Game::update(sf::RenderWindow& window){
     // std::cout<<"update"<<std::endl;
     healths.draw(window,sf::Color::Green);
     poisons.draw(window,sf::Color::Red);
+    man.draw_lives(window, poisons);
 }

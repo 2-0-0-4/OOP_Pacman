@@ -154,6 +154,7 @@ void Pacman::movement(Maze &maze, Health &temp_health, Poison &temp_poison){
     }
     
     if(temp_poison.find_in_array(position.x/16,position.y/16)){ //poison is there
+        //std::cout << "im here before" << std::endl;
         temp_poison.remove_from_array(position.x/16,position.y/16);
     }
     // 16 is our cells size and 21 is the width of our maze.
@@ -178,6 +179,19 @@ void Pacman::died(){
     }
 }   
 
-void Pacman::draw_lives(sf::RenderWindow &temp){
-    
+void Pacman::draw_lives(sf::RenderWindow &temp, Poison &temp_poison){
+    std::cout << position.x << " " << position.y << std::endl;
+    if(temp_poison.find_in_array(position.x/16,position.y/16)){
+        std::cout << "poison eaten" << std::endl; 
+        lives -=1;
+    } 
+    for(int i = 0; i < lives; i++){
+        sf::Texture texture;
+        texture.loadFromFile("heart_1.png");
+        sf::Sprite sprite;
+        sprite.setTexture(texture); 
+        sprite.setScale(sf::Vector2f(0.05f, .05f));
+        sprite.setPosition(heart_loco[i][0], heart_loco[i][1]);
+        temp.draw(sprite);
+    }
 }
