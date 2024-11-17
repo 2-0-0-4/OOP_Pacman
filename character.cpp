@@ -162,14 +162,14 @@
                         break;
                     }
                 }
-            }
-            if(maze.maze_sketch[position.y/16][position.x/16] == "."){ //health is there
-                maze.maze_sketch[position.y/16][position.x/16] = " ";
+            } //maze.maze_sketch[position.y/16][position.x/16] == "."
+            if(temp_health.find_in_array(position.x/16,position.y/16)){ //health is there
+                // maze.maze_sketch[position.y/16][position.x/16] = " ";
                 temp_health.remove_from_array(position.x/16,position.y/16);
-                std::cout<<"here"<<std::endl;
+                // std::cout<<"here"<<std::endl;
             }
             
-            if(maze.maze_sketch[position.y/16][position.x/16] == "x"){ //poison is there
+            if(temp_poison.find_in_array(position.x/16,position.y/16)){ //poison is there
                 temp_poison.remove_from_array(position.x/16,position.y/16);
             }
             // 16 is our cells size and 21 is the width of our maze.
