@@ -77,5 +77,5 @@ void Game::update(sf::RenderWindow& window){
     // std::cout<<"update"<<std::endl;
     healths.draw(window,sf::Color::Green);
     poisons.draw(window,sf::Color::Red);
-    man.draw_lives(window, poisons);
+    man.draw_data(window);
 }

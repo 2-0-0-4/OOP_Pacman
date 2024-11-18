@@ -24,9 +24,10 @@ public:
 class Pacman : public Character {
 private:
     int lives = 3; // Number of lives Pacman has
+    int score = 0;
     std::vector<std::vector<int>> heart_loco{{16, 337},{40,337},{64,337}};
 public:
-    void draw_lives(sf::RenderWindow &temp, Poison &temp_poison);
+    void draw_data(sf::RenderWindow &temp);
     void increase_lives();
     void movement(Maze &maze, Health& temp_health, Poison& temp_poison);
     void died();

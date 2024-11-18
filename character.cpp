@@ -2,6 +2,7 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
 #include "character.hpp"
+#include <cstring>
 #include <cmath>
 
 
@@ -149,12 +150,13 @@ void Pacman::movement(Maze &maze, Health &temp_health, Poison &temp_poison){
     } //maze.maze_sketch[position.y/16][position.x/16] == "."
     if(temp_health.find_in_array(position.x/16,position.y/16)){ //health is there
         // maze.maze_sketch[position.y/16][position.x/16] = " ";
+        score += 50;
         temp_health.remove_from_array(position.x/16,position.y/16);
         // std::cout<<"here"<<std::endl;
     }
     
     if(temp_poison.find_in_array(position.x/16,position.y/16)){ //poison is there
-        //std::cout << "im here before" << std::endl;
+        lives -= 1;
         temp_poison.remove_from_array(position.x/16,position.y/16);
     }
     // 16 is our cells size and 21 is the width of our maze.
@@ -179,12 +181,23 @@ void Pacman::died(){
     }
 }   
 
-void Pacman::draw_lives(sf::RenderWindow &temp, Poison &temp_poison){
-    std::cout << position.x << " " << position.y << std::endl;
-    if(temp_poison.find_in_array(position.x/16,position.y/16)){
-        std::cout << "poison eaten" << std::endl; 
-        lives -=1;
-    } 
+void Pacman::draw_data(sf::RenderWindow &temp){
+    sf::Font font;
+    font.loadFromFile("ka1.ttf");
+    sf::Text text_score;
+    sf::Text text;
+    text_score.setFont(font);
+    text.setFont(font);
+    text_score.setFillColor(sf::Color::White);
+    text.setFillColor(sf::Color::White);
+    text_score.setString(std::to_string(score));
+    text.setString("Score: ");
+    text_score.setCharacterSize(15);
+    text.setCharacterSize(15);
+    text_score.setPosition(220,340); //245 340
+    text.setPosition(150,340); //200 340
+    temp.draw(text_score);
+    temp.draw(text);
     for(int i = 0; i < lives; i++){
         sf::Texture texture;
         texture.loadFromFile("heart_1.png");
@@ -195,3 +208,4 @@ void Pacman::draw_lives(sf::RenderWindow &temp, Poison &temp_poison){
         temp.draw(sprite);
     }
 }
+
