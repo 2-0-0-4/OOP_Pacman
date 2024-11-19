@@ -1,9 +1,68 @@
 #include "Game.hpp"
 //g++ *.cpp -I"C:\mingw_dev_lib\include" -L"C:\mingw_dev_lib\lib" -lsfml-graphics -lsfml-window -lsfml-system -o main.exe
+// const int CELL_SIZE= 16;
+// const int MAP_W= 21;
+// const int MAP_H=21;
+// const int SCREEN_RESIZE=2;
 
 Game::Game(){};
 Game::~Game(){};
+void Game::show_start(){
+    sf::RenderWindow window(sf::VideoMode(CELL_SIZE * MAP_W * SCREEN_RESIZE, (40 + CELL_SIZE * MAP_H) * SCREEN_RESIZE), "Pac-Man", sf::Style::Close);
+    window.setView(sf::View(sf::FloatRect(0, 0, CELL_SIZE * MAP_W, 40 + CELL_SIZE * MAP_H)));
 
+    // Show the start screen
+    StartScreen(window);
+}
+bool Game::screen_clicked(sf::Vector2i mousePos) {
+    
+    return mousePos.x >= 300 && mousePos.x <= 700 &&
+           mousePos.y >= 500 && mousePos.y <= 800;
+}
+
+void Game::StartScreen(sf::RenderWindow &window) {
+    sf::Texture start_screen;
+
+    // Try to load the image
+    if (!start_screen.loadFromFile("pacman_start.jpg")) {
+        std::cerr << "Error: Could not load start screen image!" << std::endl;
+        return;
+    } else {
+        std::cout << "Image loaded successfully!" << std::endl;
+    }
+
+    sf::Sprite start(start_screen);
+
+    
+    // start.setScale(window.getSize().x / float(start.getLocalBounds().width), 
+    //                window.getSize().y / float(start.getLocalBounds().height));
+
+    //position the image  in the center of the window
+    // start.setPosition((window.getSize().x - start.getLocalBounds().width) / 2, 
+    //                   (window.getSize().y - start.getLocalBounds().height) / 2);
+
+    
+    while (window.isOpen()) {
+        sf::Event event;
+        while (window.pollEvent(event)) {
+            if (event.type == sf::Event::Closed)
+                window.close();
+
+            // if mouse clicked, transition to the game
+            if (event.type==sf::Event::MouseButtonPressed) {
+                if (screen_clicked(sf::Mouse::getPosition(window))) {
+                    init();  // Transition to the next screen
+                    return;
+                }
+            }
+        }
+
+        // Clear the window, draw the image, and display
+        window.clear(); // Clear the window before drawing the new frame
+        window.draw(start); // Draw the sprite (image)
+        window.display();  // Display the window contents
+    }
+}
 void Game::init(){
      unsigned lag = 0;
 
@@ -12,9 +71,9 @@ void Game::init(){
     // SFML thing. Stores events, I think.
     sf::Event event;
 
-    sf::RenderWindow window(sf::VideoMode(CELL_SIZE * MAP_W * SCREEN_RESIZE, (30 + CELL_SIZE * MAP_H) * SCREEN_RESIZE ), "Pac-Man", sf::Style::Close);
+    sf::RenderWindow window(sf::VideoMode(CELL_SIZE * MAP_W * SCREEN_RESIZE, (40 + CELL_SIZE * MAP_H) * SCREEN_RESIZE ), "Pac-Man", sf::Style::Close);
     // making the window to fit the maze
-    window.setView(sf::View(sf::FloatRect(0, 0, CELL_SIZE * MAP_W, 30 + CELL_SIZE * MAP_H )));
+    window.setView(sf::View(sf::FloatRect(0, 0, CELL_SIZE * MAP_W, 40 + CELL_SIZE * MAP_H )));
 
     // generating a random seed.
     srand(static_cast<unsigned>(time(0)));
@@ -72,10 +131,11 @@ void Game::init(){
     }
 }
 
+
 void Game::update(sf::RenderWindow& window){
     // pacman_maze.draw_maze(MAP_H,MAP_W,healths,poisons,window);  // Draw the map
     // std::cout<<"update"<<std::endl;
     healths.draw(window,sf::Color::Green);
     poisons.draw(window,sf::Color::Red);
-    man.draw_data(window);
 }
+
