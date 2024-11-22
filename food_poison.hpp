@@ -28,7 +28,7 @@ class Poison:public Food{
     private:
         int points;
     public:
-        void consume();
+        void draw(sf::RenderWindow &temp);
 };
 
   

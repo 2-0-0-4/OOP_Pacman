@@ -15,7 +15,7 @@ void Maze::draw_maze(int MAP_W, int MAP_H,Health& temp_health,Poison& temp_poiso
                 if(maze_sketch[j][i] == "#"){
                     temp_wall.draw(i_window,i,j);
                 }
-                else if(maze_sketch[j][i] == "." && init){ //health
+                else if(maze_sketch[j][i] == " " && init){ //health
                     temp_health.add_to_array(i,j);
                     // temp_health.draw(i_window,sf::Color::Green);
                 }
