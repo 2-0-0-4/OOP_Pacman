@@ -5,13 +5,24 @@
 #include "Maze.hpp"
 #include <iostream>
 
+struct Position
+{
+	int x;
+	int y;
+
+	
+	bool operator==(const Position& i_position)
+	{
+		return this->x == i_position.x && this->y == i_position.y;
+	}
+};
 
 // Base class: Character
 class Character {
 protected:
     sf::CircleShape player; // Represents the character shape
-    sf::Vector2f position = {160, 128}; // Initial position
-    int speed = 1; // Movement speed
+    sf::Vector2f position = {160, 176}; // Initial position
+    int speed = 2; // Movement speed
     int direction=0; //which direction its gonna go in
 
 public:
@@ -26,11 +37,36 @@ private:
     int lives = 3; // Number of lives Pacman has
     int score = 0;
     std::vector<std::vector<int>> heart_loco{{16, 337},{40,337},{64,337}};
+    // Position position;
+    // Position position = {160, 144};
 public:
     void draw_data(sf::RenderWindow &temp);
     void increase_lives();
     void movement(Maze &maze, Health& temp_health, Poison& temp_poison);
     void died();
+    // Position get_position();
+    sf::Vector2f get_position();
+    int get_direction();
+    // Position set_position();
 };
 
+
+class Ghost {
+    private:
+
+    sf::Vector2f position ;  // Position of the ghost = {160, 112}
+    
+    sf::Vector2f target; 
+    int direction;
+    int ghost_id;
+    float ghost_speed=1.5;
+    public:
+        
+        Ghost(int id);
+        void draw_ghost(sf::RenderWindow &i_window);
+        void set_position(int pos_x, int pos_y);
+        void find_pacman( Pacman& i_pacman);
+        void ghost_movement( Pacman& i_pacman,Maze &maze);
+
+};
 #endif 
