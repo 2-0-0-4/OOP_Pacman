@@ -40,6 +40,7 @@ private:
     // Position position;
     // Position position = {160, 144};
 public:
+    //int speed = 2;
     void draw_data(sf::RenderWindow &temp);
     void increase_lives();
     void movement(Maze &maze, Health& temp_health, Poison& temp_poison);
@@ -67,6 +68,8 @@ class Ghost : public Character{
         void set_position(int pos_x, int pos_y);
         void find_pacman( Pacman& i_pacman);
         void ghost_movement( Pacman& i_pacman,Maze &maze);
+        //int ghost_movement( Pacman& i_pacman,Maze &maze, int last_direction);
+        
 
 };
 #endif 

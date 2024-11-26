@@ -98,6 +98,7 @@ void Game::init()
     // Ghost ghost;
     window.setFramerateLimit(100);
     pacman_maze.draw_maze(MAP_H, MAP_W, healths, poisons, window, true); // Draw the map
+    int last_direction = 5;
     while (window.isOpen())
     {
         sf::Event event;
@@ -113,7 +114,7 @@ void Game::init()
     }
         for (size_t i = 0; i < ghosts.size(); i++) {
             ghosts[i].ghost_movement(man, pacman_maze);  // call ghost_movement for each ghost
-                       
+            //last_direction =  ghosts[i].ghost_movement(man, pacman_maze, last_direction);  // call ghost_movement for each ghost
         }
         man.draw(window);
         pacman_maze.draw_maze(MAP_H, MAP_W, healths, poisons, window, false); // Draw the map
