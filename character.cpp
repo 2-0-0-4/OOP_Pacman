@@ -16,7 +16,7 @@ void Character::draw(sf::RenderWindow &temp){
 }
 
 void Character::respawn(){
-        //position = {200,150};
+        position = {160, 176};
 }
 
 bool Character::wall_collision(int pos_x, int pos_y, int MAP_H, int MAP_W, const Maze& maze){
@@ -81,7 +81,8 @@ void Pacman::increase_lives(){
     }
 }
 
-void Pacman::movement(Maze &maze, Health &temp_health, Poison &temp_poison){
+int Pacman::movement(Maze &maze, Health &temp_health, Poison &temp_poison){
+    int status = 0;
     sf::Vector2f index;
     index.x = position.x / 16;  // Assuming the cell size is 16x16
     index.y = position.y / 16;
@@ -148,18 +149,7 @@ void Pacman::movement(Maze &maze, Health &temp_health, Poison &temp_poison){
             }
         }
     } //maze.maze_sketch[position.y/16][position.x/16] == "."
-    if(temp_health.find_in_array(position.x/16,position.y/16)){ //health is there
-        // maze.maze_sketch[position.y/16][position.x/16] = " ";
-        score += 50;
-        temp_health.remove_from_array(position.x/16,position.y/16);
-        // std::cout<<"here"<<std::endl;
-    }
     
-    if(temp_poison.find_in_array(position.x/16,position.y/16)){ //poison is there
-        lives -= 1;
-        temp_poison.remove_from_array(position.x/16,position.y/16);
-    }
-    // 16 is our cells size and 21 is the width of our maze.
     if (-16> position.x)
     {
         position.x = 16*21 - speed;  //wraps it around and makess it come out from the right
@@ -168,16 +158,37 @@ void Pacman::movement(Maze &maze, Health &temp_health, Poison &temp_poison){
     {
         position.x=speed - 16;  //wraps it around and makess it come out from the left
     }
-
+    
+    if(temp_health.find_in_array(position.x/16,position.y/16)){ //health is there
+        // maze.maze_sketch[position.y/16][position.x/16] = " ";
+        score += 50;
+        temp_health.remove_from_array(position.x/16,position.y/16);
+        if (temp_health.is_empty() == true){
+            std::cout << "hereee" << std::endl;
+            status = 2;
         }
+        // std::cout<<"here"<<std::endl;
+    }
+    
+    if(temp_poison.find_in_array(position.x/16,position.y/16)){ //poison is there
+        temp_poison.remove_from_array(position.x/16,position.y/16);
+        status = died();
+    }
+    // 16 is our cells size and 21 is the width of our maze.
+    std::cout << "status: " << status << std::endl;
+    return status;
+}
 
-void Pacman::died(){
+int Pacman::died(){
     if (lives == 0){
         std::cout << "game over!" << std::endl;
+        return 1;
     }
     else{
+        cout << "lives - 1" << endl;
         lives -= 1;
         respawn();
+        return 0;
     }
 }   
 
@@ -399,12 +410,12 @@ void Ghost::ghost_movement(Pacman& i_pacman, Maze& maze) {
 
     
     find_pacman(i_pacman);
-    cout << "Target Position: " << target.x << ", " << target.y << endl;
+    //cout << "Target Position: " << target.x << ", " << target.y << endl;
 
     // calculate movement direction towards the target
     int dx = target.x - position.x;
     int dy = target.y - position.y;
-    cout << "dx: " << dx << ", dy: " << dy << endl;
+    //cout << "dx: " << dx << ", dy: " << dy << endl;
 
     
 
@@ -484,7 +495,7 @@ void Ghost::ghost_movement(Pacman& i_pacman, Maze& maze) {
             if (!walls[0]) {
                 position.x += ghost_speed;
                 moved = true;
-                cout << "Moving right: " << position.x << endl;
+                //cout << "Moving right: " << position.x << endl;
             }
             else {
                 // if there's a wall, search for another direction
@@ -500,7 +511,7 @@ void Ghost::ghost_movement(Pacman& i_pacman, Maze& maze) {
             if (!walls[2]) {
                 position.y -= ghost_speed;
                 moved = true;
-                cout << "Moving up: " << position.y << endl;
+                //cout << "Moving up: " << position.y << endl;
             }
             else {
                 
@@ -516,7 +527,7 @@ void Ghost::ghost_movement(Pacman& i_pacman, Maze& maze) {
             if (!walls[1]) {
                 position.x -= ghost_speed;
                 moved = true;
-                cout << "Moving left: " << position.x << endl;
+                //cout << "Moving left: " << position.x << endl;
             }
             else {
                 
@@ -532,7 +543,7 @@ void Ghost::ghost_movement(Pacman& i_pacman, Maze& maze) {
             if (!walls[3]) {
                 position.y += ghost_speed;
                 moved = true;
-                cout << "Moving down: " << position.y << endl;
+                //cout << "Moving down: " << position.y << endl;
             }
             else {
                 // if there's a wall, search for another direction
@@ -548,7 +559,7 @@ void Ghost::ghost_movement(Pacman& i_pacman, Maze& maze) {
 
     
     if (!moved) {
-        cout << "Hit a wall! Recalculating direction..." << endl;
+        //cout << "Hit a wall! Recalculating direction..." << endl;
     }
 
     // Handle wrap-around (ghost moves off one edge and appears on the opposite side)
@@ -560,5 +571,5 @@ void Ghost::ghost_movement(Pacman& i_pacman, Maze& maze) {
     }
     
     // Debugging final position
-    cout << "Ghost final position: " << position.x << ", " << position.y << endl;
+    //cout << "Ghost final position: " << position.x << ", " << position.y << endl;
 }

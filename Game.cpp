@@ -8,6 +8,7 @@
 
 Game::Game() {};
 Game::~Game() {};
+
 void Game::show_start()
 {
     sf::RenderWindow window(sf::VideoMode(CELL_SIZE * MAP_W * SCREEN_RESIZE, (40 + CELL_SIZE * MAP_H) * SCREEN_RESIZE), "Pac-Man", sf::Style::Close);
@@ -72,6 +73,121 @@ void Game::StartScreen(sf::RenderWindow &window)
         window.display();   // Display the window contents
     }
 }
+
+void Game::show_win()
+{
+    sf::RenderWindow window(sf::VideoMode(CELL_SIZE * MAP_W * SCREEN_RESIZE, (40 + CELL_SIZE * MAP_H) * SCREEN_RESIZE), "Pac-Man", sf::Style::Close);
+    window.setView(sf::View(sf::FloatRect(0, 0, CELL_SIZE * MAP_W, 40 + CELL_SIZE * MAP_H)));
+
+    // Show the start screen
+    WinScreen(window);
+}
+
+bool Game::screen_clicked_win(sf::Vector2i mousePos){
+    return mousePos.x >= 300 && mousePos.x <= 700 && //might need to change based on buton loco
+           mousePos.y >= 500 && mousePos.y <= 800; 
+}
+
+void Game::WinScreen(sf::RenderWindow &window)
+{
+    sf::Texture start_screen;
+
+    // Try to load the image
+    if (!start_screen.loadFromFile("")) //change to win screen
+    {
+        std::cerr << "Error: Could not load start screen image!" << std::endl;
+        return;
+    }
+    else
+    {
+        std::cout << "Image loaded successfully!" << std::endl;
+    }
+
+    sf::Sprite start(start_screen);
+
+    while (window.isOpen())
+    {
+        sf::Event event;
+        while (window.pollEvent(event))
+        {
+            if (event.type == sf::Event::Closed)
+                window.close();
+
+            // if mouse clicked, transition to the game
+            if (event.type == sf::Event::MouseButtonPressed)
+            {
+                if (screen_clicked(sf::Mouse::getPosition(window))) //
+                {
+                    init(); // Transition to the next screen
+                    return;
+                }
+            }
+        }
+
+        // Clear the window, draw the image, and display
+        window.clear();     // Clear the window before drawing the new frame
+        window.draw(start); // Draw the sprite (image)
+        window.display();   // Display the window contents
+    }
+}
+
+void Game::show_lose()
+{
+    sf::RenderWindow window(sf::VideoMode(CELL_SIZE * MAP_W * SCREEN_RESIZE, (40 + CELL_SIZE * MAP_H) * SCREEN_RESIZE), "Pac-Man", sf::Style::Close);
+    window.setView(sf::View(sf::FloatRect(0, 0, CELL_SIZE * MAP_W, 40 + CELL_SIZE * MAP_H)));
+
+    // Show the start screen
+    LoseScreen(window);
+}
+
+bool Game::screen_clicked_lose(sf::Vector2i mousePos){
+    return mousePos.x >= 300 && mousePos.x <= 700 && //might need to change based on buton loco
+           mousePos.y >= 500 && mousePos.y <= 800; 
+}
+
+void Game::LoseScreen(sf::RenderWindow &window)
+{
+    sf::Texture start_screen;
+
+    // Try to load the image
+    if (!start_screen.loadFromFile("")) //change to lose screen
+    {
+        std::cerr << "Error: Could not load start screen image!" << std::endl;
+        return;
+    }
+    else
+    {
+        std::cout << "Image loaded successfully!" << std::endl;
+    }
+
+    sf::Sprite start(start_screen);
+
+    while (window.isOpen())
+    {
+        sf::Event event;
+        while (window.pollEvent(event))
+        {
+            if (event.type == sf::Event::Closed)
+                window.close();
+
+            // if mouse clicked, transition to the game
+            if (event.type == sf::Event::MouseButtonPressed)
+            {
+                if (screen_clicked(sf::Mouse::getPosition(window))) //
+                {
+                    init(); // Transition to the next screen
+                    return;
+                }
+            }
+        }
+
+        // Clear the window, draw the image, and display
+        window.clear();     // Clear the window before drawing the new frame
+        window.draw(start); // Draw the sprite (image)
+        window.display();   // Display the window contents
+    }
+}
+
 void Game::init()
 {
 
@@ -98,7 +214,8 @@ void Game::init()
     // Ghost ghost;
     window.setFramerateLimit(100);
     pacman_maze.draw_maze(MAP_H, MAP_W, healths, poisons, window, true); // Draw the map
-    int last_direction = 5;
+    //int last_direction = 5;
+    int status = 0;
     while (window.isOpen())
     {
         sf::Event event;
@@ -118,12 +235,17 @@ void Game::init()
         }
         man.draw(window);
         pacman_maze.draw_maze(MAP_H, MAP_W, healths, poisons, window, false); // Draw the map
-        man.movement(pacman_maze, healths, poisons);
-        // ghost.ghost_movement( man,pacman_maze);
-        // healths.draw(window,sf::Color::Green);
-        // poisons.draw(window,sf::Color::Red);
-        // healths.print();
-        // poisons.print();
+        status = man.movement(pacman_maze, healths, poisons);
+        std::cout << status << std::endl;
+        if(status == 1){
+            std::cout << "game over screen pls" <<std::endl;
+            show_lose();
+        }
+        else if (status == 2){
+            std::cout << "You win screen" <<std::endl;
+            show_win();
+        }
+
         window.display();
         window.clear();
         update(window);

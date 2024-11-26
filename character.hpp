@@ -43,8 +43,8 @@ public:
     //int speed = 2;
     void draw_data(sf::RenderWindow &temp);
     void increase_lives();
-    void movement(Maze &maze, Health& temp_health, Poison& temp_poison);
-    void died();
+    int movement(Maze &maze, Health& temp_health, Poison& temp_poison);
+    int died();
     // Position get_position();
     sf::Vector2f get_position();
     int get_direction();
