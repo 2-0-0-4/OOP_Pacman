@@ -1,4 +1,5 @@
 #include "Game.hpp"
+#include <iostream>
 // g++ *.cpp -I"C:\mingw_dev_lib\include" -L"C:\mingw_dev_lib\lib" -lsfml-graphics -lsfml-window -lsfml-system -o main.exe
 //  const int CELL_SIZE= 16;
 //  const int MAP_W= 21;

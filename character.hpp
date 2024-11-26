@@ -51,7 +51,7 @@ public:
 };
 
 
-class Ghost {
+class Ghost : public Character{
     private:
 
     sf::Vector2f position ;  // Position of the ghost = {160, 112}
