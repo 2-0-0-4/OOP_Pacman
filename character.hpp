@@ -60,7 +60,7 @@ class Ghost : public Character{
     sf::Vector2f target; 
     int direction;
     int ghost_id;
-    float ghost_speed=1.5;
+    float ghost_speed=1;
     public:
         
         Ghost(int id);

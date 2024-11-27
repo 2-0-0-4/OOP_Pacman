@@ -236,7 +236,6 @@ void Game::init()
         man.draw(window);
         pacman_maze.draw_maze(MAP_H, MAP_W, healths, poisons, window, false); // Draw the map
         status = man.movement(pacman_maze, healths, poisons);
-        std::cout << status << std::endl;
         if(status == 1){
             std::cout << "game over screen pls" <<std::endl;
             show_lose();
