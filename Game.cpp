@@ -193,8 +193,8 @@ void Game::init()
 
     std::vector<Ghost> ghosts;
         ghosts.push_back(Ghost(0));  // red Ghost
-        ghosts.push_back(Ghost(1));  // pink Ghost
-        ghosts.push_back(Ghost(2));  // blue Ghost
+        // ghosts.push_back(Ghost(1));  // pink Ghost
+        // ghosts.push_back(Ghost(2));  // blue Ghost
     // similar to lag, used to make the game framerate-independent.
     std::chrono::time_point<std::chrono::steady_clock> previous_time;
     // SFML thing. Stores events, I think.
@@ -214,7 +214,7 @@ void Game::init()
     // Ghost ghost;
     window.setFramerateLimit(100);
     pacman_maze.draw_maze(MAP_H, MAP_W, healths, poisons, window, true); // Draw the map
-    //int last_direction = 5;
+    int last_direction = 5;
     int status = 0;
     while (window.isOpen())
     {
@@ -230,8 +230,8 @@ void Game::init()
         ghosts[i].draw_ghost(window);  // Call the draw method of each ghost
     }
         for (size_t i = 0; i < ghosts.size(); i++) {
-            ghosts[i].ghost_movement(man, pacman_maze);  // call ghost_movement for each ghost
-            //last_direction =  ghosts[i].ghost_movement(man, pacman_maze, last_direction);  // call ghost_movement for each ghost
+            //ghosts[i].ghost_movement(man, pacman_maze);  // call ghost_movement for each ghost
+            last_direction =  ghosts[i].ghost_movement(man, pacman_maze, last_direction);  // call ghost_movement for each ghost
         }
         man.draw(window);
         pacman_maze.draw_maze(MAP_H, MAP_W, healths, poisons, window, false); // Draw the map

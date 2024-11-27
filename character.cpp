@@ -397,25 +397,49 @@ void Ghost::find_pacman( Pacman& i_pacman){
 //___________________________________________________________________________________________________________________
 
 //there r a lott of debugging statements that i ade gpt put to figure out where the issue is so ignore that!
-
-void Ghost::ghost_movement(Pacman& i_pacman, Maze& maze) {
-    Character c;
-
+int Ghost::ghost_movement(Pacman& i_pacman, Maze& maze, int last_direction) {
     
     bool walls[4];
-    walls[0] = c.wall_collision(position.x + ghost_speed, position.y, 21, 21, maze); // Right
-    walls[1] = c.wall_collision(position.x - ghost_speed, position.y, 21, 21, maze); // Left
-    walls[2] = c.wall_collision(position.x, position.y - ghost_speed, 21, 21, maze); // Up
-    walls[3] = c.wall_collision(position.x, position.y + ghost_speed, 21, 21, maze); // Down
+    walls[0] = this->wall_collision(position.x + ghost_speed, position.y, 21, 21, maze); // Right
+    walls[1] = this->wall_collision(position.x - ghost_speed, position.y, 21, 21, maze); // Left
+    walls[2] = this->wall_collision(position.x, position.y - ghost_speed, 21, 21, maze); // Up
+    walls[3] = this->wall_collision(position.x, position.y + ghost_speed, 21, 21, maze); // Down
+
+    // bool walls_pacman[4];
+    // walls_pacman[0] = i_pacman.wall_collision(position.x + i_pacman.speed, position.y, 21, 21, maze); // Right
+    // walls_pacman[1] = i_pacman.wall_collision(position.x - i_pacman.speed, position.y, 21, 21, maze); // Left
+    // walls_pacman[2] = i_pacman.wall_collision(position.x, position.y - i_pacman.speed, 21, 21, maze); // Up
+    // walls_pacman[3] = i_pacman.wall_collision(position.x, position.y + i_pacman.speed, 21, 21, maze); // Down
+
+
+    cout << "W" << endl;
+    cout << "walls[0] right: " << walls[0] << "   "  << endl;
+    cout << "walls[1] left : " << walls[1] << "   "  << endl;
+    cout << "walls[2] up   : " << walls[2] << "   "  << endl;
+    cout << "walls[3] down : " << walls[3] << "   "  << endl;
+    // cout << "position.x: " << position.x << "position.y: " << position.y << endl;
 
     
     find_pacman(i_pacman);
     //cout << "Target Position: " << target.x << ", " << target.y << endl;
 
     // calculate movement direction towards the target
-    int dx = target.x - position.x;
-    int dy = target.y - position.y;
-    //cout << "dx: " << dx << ", dy: " << dy << endl;
+    int opp_direction;
+    switch (last_direction)
+    {
+    case 0:
+        opp_direction = 1;
+        break;
+    case 1:
+        opp_direction = 0;
+        break;
+    case 2:
+        opp_direction = 3;
+        break;
+    case 3:
+        opp_direction = 2;
+        break;
+    }
 
     
 
@@ -466,110 +490,94 @@ void Ghost::ghost_movement(Pacman& i_pacman, Maze& maze) {
         }
     }
 
-    //  make a decision based on direction
+    int dx = target.x - position.x;
+    int dy = target.y - position.y;
+    //cout << "dx: " << dx << ", dy: " << dy << endl;
+
+
     if (std::abs(dx) > std::abs(dy)) {
         if (dx > 0 && !walls[0]) { // move right
             direction = 0;
+        }
+        else if (dx > 0 && walls[0]){
+            for (int i = 0; i < 4; i++) {
+                if (!walls[i] && i != opp_direction) {
+                    direction = i;
+                    break;
+                }
+            }
         } 
-        else if (dx < 0 && !walls[1]) { // move left
+    
+        if (dx < 0 && !walls[1]) { // move left
+            //cout << "im here" << endl;
             direction = 1;
         }
-    } else {
+        else if (dx < 0 && walls[1]){
+            //cout << "yerrr" << endl;
+            for (int i = 0; i < 4; i++) {
+                if (!walls[i] && i != opp_direction) {
+                    direction = i;
+                    break;
+                }
+            }
+        }
+    } 
+    else {
         if (dy > 0 && !walls[3]) { // move down
             direction = 3;
         } 
+        else if (dy > 0 && walls[3]){
+            for (int i = 0; i < 4; i++) {
+                if (!walls[i] && i != opp_direction) {
+                    direction = i;
+                    break;
+                }
+            }
+        }
+
         else if (dy < 0 && !walls[2]) { // move up
             direction = 2;
         }
+        else if (dy < 0 && walls[2]){
+            for (int i = 0; i < 4; i++) {
+                if (!walls[i] && i != opp_direction) {
+                    direction = i;
+                    break;
+                }
+            }
+        }
     }
-
-    
-
-    
-
-    // move the ghost based on the chosen direction
-    bool moved = false; 
 
     switch (direction) {
         case 0: // move right
             if (!walls[0]) {
                 position.x += ghost_speed;
-                moved = true;
                 //cout << "Moving right: " << position.x << endl;
             }
-            else {
-                // if there's a wall, search for another direction
-                for (int i = 0; i < 4; i++) {
-                    if (!walls[i]) {
-                        direction = i;
-                        break;
-                    }
-                }
-            }
             break;
-        case 2: // move up
-            if (!walls[2]) {
-                position.y -= ghost_speed;
-                moved = true;
-                //cout << "Moving up: " << position.y << endl;
-            }
-            else {
-                
-                for (int i = 0; i < 4; i++) {
-                    if (!walls[i]) {
-                        direction = i;
-                        break;
-                    }
-                }
-            }
-            break;
+
         case 1: //  left
             if (!walls[1]) {
                 position.x -= ghost_speed;
-                moved = true;
                 //cout << "Moving left: " << position.x << endl;
-            }
-            else {
-                
-                for (int i = 0; i < 4; i++) {
-                    if (!walls[i]) {
-                        direction = i;
-                        break;
-                    }
-                }
-            }
+            }   
+            break;
+
+        case 2: // move up
+            if (!walls[2]) {
+                position.y -= ghost_speed;
+                //cout << "Moving up: " << position.y << endl;
+            }      
+
             break;
         case 3: //  down
             if (!walls[3]) {
                 position.y += ghost_speed;
-                moved = true;
                 //cout << "Moving down: " << position.y << endl;
             }
-            else {
                 // if there's a wall, search for another direction
-                for (int i = 0; i < 4; i++) {
-                    if (!walls[i]) {
-                        direction = i;
-                        break;
-                    }
-                }
-            }
             break;
     }
 
-    
-    if (!moved) {
-        //cout << "Hit a wall! Recalculating direction..." << endl;
-    }
-
-    // Handle wrap-around (ghost moves off one edge and appears on the opposite side)
-    if (position.x < 0) {
-        position.x = 16 * 21 - ghost_speed; // Wrap from left to right
-    }
-    if (position.x >= 16 * 21) {
-        position.x = 0; // Wrap from right to left
-    }
-    
-    // Debugging final position
-    //cout << "Ghost final position: " << position.x << ", " << position.y << endl;
+    return direction;
 }
