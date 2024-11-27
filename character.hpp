@@ -69,6 +69,7 @@ class Ghost : public Character{
         void find_pacman( Pacman& i_pacman);
         //void ghost_movement( Pacman& i_pacman,Maze &maze);
         int ghost_movement( Pacman& i_pacman,Maze &maze, int last_direction);
+        // int random_d( Pacman& i_pacman,Maze &maze, int last_direction);
         
 
 };

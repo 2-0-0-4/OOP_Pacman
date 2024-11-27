@@ -193,8 +193,8 @@ void Game::init()
 
     std::vector<Ghost> ghosts;
         ghosts.push_back(Ghost(0));  // red Ghost
-        // ghosts.push_back(Ghost(1));  // pink Ghost
-        // ghosts.push_back(Ghost(2));  // blue Ghost
+        ghosts.push_back(Ghost(1));  // pink Ghost
+        ghosts.push_back(Ghost(2));  // blue Ghost
     // similar to lag, used to make the game framerate-independent.
     std::chrono::time_point<std::chrono::steady_clock> previous_time;
     // SFML thing. Stores events, I think.
