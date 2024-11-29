@@ -223,7 +223,7 @@ void Pacman::draw_data(sf::RenderWindow &temp)
     text.setPosition(150, 340);       // 200 340
     temp.draw(text_score);
     temp.draw(text);
-    for (int i = 0; i < lives; i++)
+    for (int i = 0; i < lives+1; i++)
     {
         sf::Texture texture;
         texture.loadFromFile("heart_1.png");

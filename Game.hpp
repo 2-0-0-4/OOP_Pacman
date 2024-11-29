@@ -24,9 +24,10 @@ class Game{
         Game(); 
         ~Game(); 
         void show_start();
-        void StartScreen(sf::RenderWindow& window);
+        void show_start(sf::RenderWindow &window);
+        void StartScreen(sf::RenderWindow &window);
         bool screen_clicked(sf::Vector2i mousePos);
-        void init(); //this should be the main window.open loop thigy
+        void init(sf::RenderWindow &window); //this should be the main window.open loop thigy
         void update(sf::RenderWindow& window); //redraws the maze. this will be called in init after any event
         //we need to call update cause lets say smth gets removed from the food array so we need to 
         //re draw teh maze everytime so that change is reflected on screen 
@@ -37,7 +38,9 @@ class Game{
 
         void show_lose();
         void LoseScreen(sf::RenderWindow& window);
-        bool screen_clicked_lose(sf::Vector2i mousePos);
+        
+        
+        // bool screen_clicked_lose(sf::Vector2i mousePos);
 
 };
 
