@@ -324,11 +324,11 @@ void Ghost::draw_ghost(sf::RenderWindow &i_window)
 
 // void Ghost::set_position(int pos_x, int pos_y){
 //     position= {pos_x,pos_y};
+// // }
+// void Ghost::find_pacman(Pacman &i_pacman) //not needed
+// {
+//     target = i_pacman.get_position();
 // }
-void Ghost::find_pacman(Pacman &i_pacman)
-{
-    target = i_pacman.get_position();
-}
 
 // void Ghost::ghost_movement(Pacman& i_pacman, Maze &maze) {
 //     Character c;
@@ -448,7 +448,7 @@ int Ghost::ghost_movement(Pacman &i_pacman, Maze &maze, int last_direction)
     // cout << "up   : " << position.x << " " << position.y - ghost_speed << "   "  << endl;
     // cout << "down : " << position.x << " " << position.y + ghost_speed << "   "  << endl;
 
-    find_pacman(i_pacman);
+    // find_pacman(i_pacman);
     // cout << "Target Position: " << target.x << ", " << target.y << endl;
 
     // calculate movement direction towards the target
@@ -470,51 +470,8 @@ int Ghost::ghost_movement(Pacman &i_pacman, Maze &maze, int last_direction)
     }
 
     // route based on the ghost's ID
-    // switch (ghost_id) {
-    //     case 0: {  // red ghost will chase Pacman directly
-    target = i_pacman.get_position(); // Get Pacman's position as the target
-                                      // break;
-    //     }
-    //     case 1: {  // pink ghost (chase 4th cell in front of pacman)
-    //         target = i_pacman.get_position();  //  pacman's position first
-
-    //         // get pcmans current direction to see which way to go
-    //         switch (i_pacman.get_direction()) {
-    //             case 0:  // Right
-    //                 target.x += 16 * 4;  // move 4 cells to the right of pman
-    //                 break;
-    //             case 1:  // up
-    //                 target.y -= 16 * 4;
-    //                 break;
-    //             case 2:  // left
-    //                 target.x -= 16 * 4;
-    //                 break;
-    //             case 3:  // down
-    //                 target.y += 16 * 4;
-    //                 break;
-    //         }
-    //         break;
-    //     }
-    //     case 2: {  // blue ghost (chase 2nd cell in front of pacman)
-    //         target = i_pacman.get_position();
-
-    //         switch (i_pacman.get_direction()) {
-    //             case 0:  // Right
-    //                 target.x += 16 * 2;  // move 2 cells to the right
-    //                 break;
-    //             case 1:  // Up
-    //                 target.y -= 16 * 2;
-    //             case 2:  // Left
-    //                 target.x -= 16 * 2;
-    //                 break;
-    //             case 3:  // Down
-    //                 target.y += 16 * 2;
-    //                 break;
-    //         }
-    //         break;
-    //     }
-    // }
-
+    // target = i_pacman.get_position();
+    find_target(i_pacman);
     int dx = target.x - position.x;
     int dy = target.y - position.y;
     cout << "dx: " << dx << ", dy: " << dy << endl;
@@ -629,6 +586,55 @@ int Ghost::ghost_movement(Pacman &i_pacman, Maze &maze, int last_direction)
 
     return direction;
 }
+
+void Ghost::find_target(Pacman &i_pacman){
+    switch (ghost_id) {
+        case 0: {  // red ghost will chase Pacman directly
+    target = i_pacman.get_position(); // Get Pacman's position as the target
+                                      break;
+        }
+        case 1: {  // pink ghost (chase 4th cell in front of pacman)
+            target = i_pacman.get_position();  //  pacman's position first
+
+            // get pcmans current direction to see which way to go
+            switch (i_pacman.get_direction()) {
+                case 0:  // Right
+                    target.x += 16 * 4;  // move 4 cells to the right of pman
+                    break;
+                case 1:  // up
+                    target.y -= 16 * 4;
+                    break;
+                case 2:  // left
+                    target.x -= 16 * 4;
+                    break;
+                case 3:  // down
+                    target.y += 16 * 4;
+                    break;
+            }
+            break;
+        }
+        case 2: {  // blue ghost (chase 2nd cell in front of pacman)
+            target = i_pacman.get_position();
+
+            switch (i_pacman.get_direction()) {
+                case 0:  // Right
+                    target.x += 16 * 2;  // move 2 cells to the right
+                    break;
+                case 1:  // Up
+                    target.y -= 16 * 2;
+                case 2:  // Left
+                    target.x -= 16 * 2;
+                    break;
+                case 3:  // Down
+                    target.y += 16 * 2;
+                    break;
+            }
+            break;
+        }
+    }
+
+}
+
 
 //---------------COPILOT CODE---------------------------
 // int Ghost::ghost_movement(Pacman& i_pacman, Maze& maze, int last_direction) {

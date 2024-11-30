@@ -68,7 +68,8 @@ public:
     Ghost(int id);
     void draw_ghost(sf::RenderWindow &i_window);
     void set_position(int pos_x, int pos_y);
-    void find_pacman(Pacman &i_pacman);
+    // void find_pacman(Pacman &i_pacman);
+    void find_target(Pacman &i_pacman);
     // void ghost_movement( Pacman& i_pacman,Maze &maze);
     int ghost_movement(Pacman &i_pacman, Maze &maze, int last_direction);
     // int random_d( Pacman& i_pacman,Maze &maze, int last_direction);
