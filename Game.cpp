@@ -11,21 +11,23 @@ Game::~Game() {};
 
 void Game::show_start()
 {
+
     sf::RenderWindow window(sf::VideoMode(CELL_SIZE * MAP_W * SCREEN_RESIZE, (40 + CELL_SIZE * MAP_H) * SCREEN_RESIZE), "Pac-Man", sf::Style::Close);
     window.setView(sf::View(sf::FloatRect(0, 0, CELL_SIZE * MAP_W, 40 + CELL_SIZE * MAP_H)));
-
     // Show the start screen
     StartScreen(window);
 }
 
-void Game::show_start(sf::RenderWindow &window)
-{
-    // sf::RenderWindow window(sf::VideoMode(CELL_SIZE * MAP_W * SCREEN_RESIZE, (40 + CELL_SIZE * MAP_H) * SCREEN_RESIZE), "Pac-Man", sf::Style::Close);
-    // window.setView(sf::View(sf::FloatRect(0, 0, CELL_SIZE * MAP_W, 40 + CELL_SIZE * MAP_H)));
+// void Game::show_start(sf::RenderWindow &window)
+// {
+//     // sf::RenderWindow window(sf::VideoMode(CELL_SIZE * MAP_W * SCREEN_RESIZE, (40 + CELL_SIZE * MAP_H) * SCREEN_RESIZE), "Pac-Man", sf::Style::Close);
+//     // window.setView(sf::View(sf::FloatRect(0, 0, CELL_SIZE * MAP_W, 40 + CELL_SIZE * MAP_H)));
 
-    // Show the start screen
-    StartScreen(window);
-}
+//     // Show the start screen
+//     window.clear();
+//     std::cout << "show_start(window)";
+//     StartScreen(window);
+// }
 
 
 bool Game::screen_clicked(sf::Vector2i mousePos)
@@ -41,7 +43,7 @@ void Game::StartScreen(sf::RenderWindow &window)
     // sf::RenderWindow window(sf::VideoMode(CELL_SIZE * MAP_W * SCREEN_RESIZE, (40 + CELL_SIZE * MAP_H) * SCREEN_RESIZE), "Pac-Man", sf::Style::Close);
     // // making the window to fit the maze
     // window.setView(sf::View(sf::FloatRect(0, 0, CELL_SIZE * MAP_W, 40 + CELL_SIZE * MAP_H)));
-
+    window.clear();
     sf::Texture start_screen;
 
     // Try to load the image
@@ -78,6 +80,7 @@ void Game::StartScreen(sf::RenderWindow &window)
             {
                 if (screen_clicked(sf::Mouse::getPosition(window)))
                 {
+                    window.clear();
                     init(window); // Transition to the next screen
                     return;
                 }
@@ -91,11 +94,11 @@ void Game::StartScreen(sf::RenderWindow &window)
     }
 }
 
-bool Game::screen_clicked_win(sf::Vector2i mousePos)
+bool Game::restart_button(sf::Vector2i mousePos)
 {
-    std::cout<<"here..";
+    std::cout<<"here...";
     return mousePos.x >= 270 && mousePos.x <= 560 && // might need to change based on buton loco
-           mousePos.y >= 700 && mousePos.y <= 830;
+           mousePos.y >= 600 && mousePos.y <= 730;
 }
 
 void Game::WinScreen(sf::RenderWindow &window)
@@ -126,10 +129,12 @@ void Game::WinScreen(sf::RenderWindow &window)
             // if mouse clicked, transition to the game
             if (event.type == sf::Event::MouseButtonPressed)
             {
-                if (screen_clicked_win(sf::Mouse::getPosition(window))) //
+                bool check = restart_button(sf::Mouse::getPosition(window));
+                std::cout<<check;
+                if (check) //
                 {
-                    show_start(window); // Transition to the next screen
-                    // init(); // Transition to the next screen
+                    man.reset();
+                    StartScreen(window);  // Transition to the next screen
                     return;
                 }
             }
@@ -170,9 +175,10 @@ void Game::LoseScreen(sf::RenderWindow &window)
             // if mouse clicked, transition to the game
             if (event.type == sf::Event::MouseButtonPressed)
             {
-                if (screen_clicked_win(sf::Mouse::getPosition(window))) //
+                if (restart_button(sf::Mouse::getPosition(window))) //
                 {
-                    show_start(window);   
+                    man.reset();
+                    StartScreen(window);   
                     // StartScreen(window); // Transition to the next screen
                     return;
                 }
@@ -188,7 +194,7 @@ void Game::LoseScreen(sf::RenderWindow &window)
 
 void Game::init(sf::RenderWindow &window)
 {
-
+    std::cout<<"in init..";
     // similar to lag, used to make the game framerate-independent.
     std::chrono::time_point<std::chrono::steady_clock> previous_time;
     // SFML thing. Stores events, I think.
@@ -201,9 +207,9 @@ void Game::init(sf::RenderWindow &window)
     // generating a random seed.
     srand(static_cast<unsigned>(time(0)));
 
-    // get the current time and store it in a variable.
+    // // get the current time and store it in a variable.
     previous_time = std::chrono::steady_clock::now();
-
+    // man.reset();
     std::vector<Ghost> ghosts;
     ghosts.push_back(Ghost(0)); // red Ghost
     ghosts.push_back(Ghost(1)); // pink Ghost
@@ -212,6 +218,7 @@ void Game::init(sf::RenderWindow &window)
     // Ghost ghost;
     window.setFramerateLimit(100);
     pacman_maze.draw_maze(MAP_H, MAP_W, healths, poisons, window, true); // Draw the map
+    // man.reset();
     int last_direction = 5;
     int status = 0;
     while (window.isOpen())
@@ -234,6 +241,7 @@ void Game::init(sf::RenderWindow &window)
             last_direction = ghosts[i].ghost_movement(man, pacman_maze, last_direction); // call ghost_movement for each ghost
         }
         man.draw(window);
+        // man.setPosition(160, 176);
         pacman_maze.draw_maze(MAP_H, MAP_W, healths, poisons, window, false); // Draw the map
         status = man.movement(pacman_maze, healths, poisons);
         if (status == 1)
@@ -266,20 +274,4 @@ void Game::update(sf::RenderWindow &window)
     man.draw_data(window);
 }
 
-// void Game::show_lose() //not needed
-// {
-//     sf::RenderWindow window(sf::VideoMode(CELL_SIZE * MAP_W * SCREEN_RESIZE, (40 + CELL_SIZE * MAP_H) * SCREEN_RESIZE), "Pac-Man", sf::Style::Close);
-//     window.setView(sf::View(sf::FloatRect(0, 0, CELL_SIZE * MAP_W, 40 + CELL_SIZE * MAP_H)));
 
-//     // Show the start screen
-//     LoseScreen(window);
-// }
-
-// void Game::show_win() //not needed
-// {
-//     sf::RenderWindow window(sf::VideoMode(CELL_SIZE * MAP_W * SCREEN_RESIZE, (40 + CELL_SIZE * MAP_H) * SCREEN_RESIZE), "Pac-Man", sf::Style::Close);
-//     window.setView(sf::View(sf::FloatRect(0, 0, CELL_SIZE * MAP_W, 40 + CELL_SIZE * MAP_H)));
-
-//     // Show the start screen
-//     WinScreen(window);
-// }

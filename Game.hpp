@@ -34,10 +34,11 @@ class Game{
         //IF IN THE FUTURE WE WANT SOUNDS ETC TO BE PLAYED. WE WILL MAKE FUCNTIONS HERE TO ADD THOSE
         void show_win();
         void WinScreen(sf::RenderWindow& window);
-        bool screen_clicked_win(sf::Vector2i mousePos);
+        bool restart_button(sf::Vector2i mousePos);
 
         void show_lose();
         void LoseScreen(sf::RenderWindow& window);
+        void reset();
         
         
         // bool screen_clicked_lose(sf::Vector2i mousePos);

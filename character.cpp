@@ -26,6 +26,11 @@ void Character::respawn()
     position = {160, 176};
 }
 
+void Character::setPosition(int x, int y){
+    position.x = x;
+    position.y = y;
+}
+
 bool Character::wall_collision(int pos_x, int pos_y, int MAP_H, int MAP_W, const Maze &maze)
 {
     bool output = false;
@@ -246,6 +251,13 @@ sf::Vector2f Pacman::get_position()
 int Pacman::get_direction()
 {
     return direction;
+}
+
+void Pacman::reset(){
+    score = 0;
+    position.x = 160;
+    position.y = 176;
+    lives = 2;
 }
 
 //-------------------ghost code----------------------------------------------

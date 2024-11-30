@@ -29,6 +29,7 @@ public:
     void draw(sf::RenderWindow &temp);
     virtual void respawn();
     bool wall_collision(int pos_x, int pos_y, int MAP_W, int MAP_H, const Maze &maze);
+    void setPosition(int x, int y);
 };
 
 // Derived class: Pacman
@@ -49,6 +50,7 @@ public:
     // Position get_position();
     sf::Vector2f get_position();
     int get_direction();
+    void reset();
     // Position set_position();
 };
 
