@@ -29,9 +29,6 @@ bool Game::screen_clicked(sf::Vector2i mousePos)
 void Game::StartScreen(sf::RenderWindow &window)
 {
 
-    // sf::RenderWindow window(sf::VideoMode(CELL_SIZE * MAP_W * SCREEN_RESIZE, (40 + CELL_SIZE * MAP_H) * SCREEN_RESIZE), "Pac-Man", sf::Style::Close);
-    // // making the window to fit the maze
-    // window.setView(sf::View(sf::FloatRect(0, 0, CELL_SIZE * MAP_W, 40 + CELL_SIZE * MAP_H)));
     window.clear();
     sf::Texture start_screen;
 
@@ -49,12 +46,6 @@ void Game::StartScreen(sf::RenderWindow &window)
     sf::Sprite start(start_screen);
     start.setScale(sf::Vector2f(0.4f, 0.4f));
 
-    // start.setScale(window.getSize().x / float(start.getLocalBounds().width),
-    //                window.getSize().y / float(start.getLocalBounds().height));
-
-    // position the image  in the center of the window
-    //  start.setPosition((window.getSize().x - start.getLocalBounds().width) / 2,
-    //                    (window.getSize().y - start.getLocalBounds().height) / 2);
 
     while (window.isOpen())
     {
@@ -190,26 +181,17 @@ void Game::init(sf::RenderWindow &window)
     std::chrono::time_point<std::chrono::steady_clock> previous_time;
     // SFML thing. Stores events, I think.
     sf::Event event;
-
-    // sf::RenderWindow window(sf::VideoMode(CELL_SIZE * MAP_W * SCREEN_RESIZE, (40 + CELL_SIZE * MAP_H) * SCREEN_RESIZE), "Pac-Man", sf::Style::Close);
-    // // making the window to fit the maze
-    // window.setView(sf::View(sf::FloatRect(0, 0, CELL_SIZE * MAP_W, 40 + CELL_SIZE * MAP_H)));
-
-    // generating a random seed.
+    
     srand(static_cast<unsigned>(time(0)));
 
-    // // get the current time and store it in a variable.
+    // get the current time and store it in a variable.
     previous_time = std::chrono::steady_clock::now();
-    // man.reset();
     std::vector<Ghost> ghosts;
     ghosts.push_back(Ghost(0)); // red Ghost
     ghosts.push_back(Ghost(1)); // pink Ghost
     ghosts.push_back(Ghost(2)); // blue Ghost
-    // Pacman man;
-    // Ghost ghost;
     window.setFramerateLimit(100);
     pacman_maze.draw_maze(MAP_H, MAP_W, healths, poisons, window, true); // Draw the map
-    // man.reset();
     int last_direction = 5;
     int status = 0;
     while (window.isOpen())
@@ -228,7 +210,6 @@ void Game::init(sf::RenderWindow &window)
         }
         for (size_t i = 0; i < ghosts.size(); i++)
         {
-            // ghosts[i].ghost_movement(man, pacman_maze);  // call ghost_movement for each ghost
             last_direction = ghosts[i].ghost_movement(man, pacman_maze, last_direction); // call ghost_movement for each ghost
         }
         man.draw(window);
@@ -238,14 +219,12 @@ void Game::init(sf::RenderWindow &window)
         if (status == 1)
         {
             std::cout << "game over screen pls" << std::endl;
-            // show_lose();
             LoseScreen(window);
             status = 0;
         }
         else if (status == 2)
         {
             std::cout << "You win screen" << std::endl;
-            // show_win();
             WinScreen(window);
             status = 0;
         }
@@ -258,8 +237,6 @@ void Game::init(sf::RenderWindow &window)
 
 void Game::update(sf::RenderWindow &window)
 {
-    // pacman_maze.draw_maze(MAP_H,MAP_W,healths,poisons,window);  // Draw the map
-    // std::cout<<"update"<<std::endl;
     healths.draw(window, sf::Color::Green);
     poisons.draw(window);
     man.draw_data(window);

@@ -5,23 +5,12 @@
 #include "Maze.hpp"
 #include <iostream>
 
-// struct Position
-// {
-//     int x;
-//     int y;
-
-//     bool operator==(const Position &i_position)
-//     {
-//         return this->x == i_position.x && this->y == i_position.y;
-//     }
-// };
 class Ghost;
 // Base class: Character
 class Character
 {
 protected:
-    // sf::CircleShape player
-    sf::Sprite player;             // Represents the character shape
+    sf::Sprite player;                  // Represents the character shape
     sf::Vector2f position = {160, 176}; // Initial position
     int speed = 2;                      // Movement speed
     int direction = 0;                  // which direction its gonna go in
@@ -42,20 +31,15 @@ private:
     int lives = 2; // Number of lives Pacman has (3 lives starting from 0)
     int score = 0;
     std::vector<std::vector<int>> heart_loco{{16, 337}, {40, 337}, {64, 337}};
-    // Position position;
-    // Position position = {160, 144};
+
 public:
-    // int speed = 2;
     void draw_data(sf::RenderWindow &temp);
     void increase_lives();
-    int movement(Maze &maze, Health &temp_health, Poison &temp_poison,std::vector<Ghost> ghosts);
+    int movement(Maze &maze, Health &temp_health, Poison &temp_poison, std::vector<Ghost> ghosts);
     int died();
-    // Position get_position();
-    // sf::Vector2f get_position();
     int get_direction();
     void reset();
     void draw_score(sf::RenderWindow &window);
-    // Position set_position();
 };
 
 class Ghost : public Character
@@ -71,13 +55,8 @@ private:
 public:
     Ghost(int id);
     void draw_ghost(sf::RenderWindow &i_window);
-    // void set_position(int pos_x, int pos_y);
-    // void find_pacman(Pacman &i_pacman);
     void find_target(Pacman &i_pacman);
-    // void ghost_movement( Pacman& i_pacman,Maze &maze);
     int ghost_movement(Pacman &i_pacman, Maze &maze, int last_direction);
-    // int random_d( Pacman& i_pacman,Maze &maze, int last_direction);
 };
-
 
 #endif

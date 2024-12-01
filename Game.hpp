@@ -28,19 +28,9 @@ class Game{
         bool screen_clicked(sf::Vector2i mousePos);
         void init(sf::RenderWindow &window); //this should be the main window.open loop thigy
         void update(sf::RenderWindow& window); //redraws the maze. this will be called in init after any event
-        //we need to call update cause lets say smth gets removed from the food array so we need to 
-        //re draw teh maze everytime so that change is reflected on screen 
-        //IF IN THE FUTURE WE WANT SOUNDS ETC TO BE PLAYED. WE WILL MAKE FUCNTIONS HERE TO ADD THOSE
-        void show_win();
         void WinScreen(sf::RenderWindow& window);
         bool restart_button(sf::Vector2i mousePos);
-
-        void show_lose();
         void LoseScreen(sf::RenderWindow& window);
-        void reset();
-        
-        
-        // bool screen_clicked_lose(sf::Vector2i mousePos);
 
 };
 
