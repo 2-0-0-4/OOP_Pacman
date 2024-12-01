@@ -24,7 +24,6 @@ class Game{
         Game(); 
         ~Game(); 
         void show_start();
-        void show_start(sf::RenderWindow &window);
         void StartScreen(sf::RenderWindow &window);
         bool screen_clicked(sf::Vector2i mousePos);
         void init(sf::RenderWindow &window); //this should be the main window.open loop thigy

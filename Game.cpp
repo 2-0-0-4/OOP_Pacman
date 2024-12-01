@@ -18,16 +18,6 @@ void Game::show_start()
     StartScreen(window);
 }
 
-// void Game::show_start(sf::RenderWindow &window)
-// {
-//     // sf::RenderWindow window(sf::VideoMode(CELL_SIZE * MAP_W * SCREEN_RESIZE, (40 + CELL_SIZE * MAP_H) * SCREEN_RESIZE), "Pac-Man", sf::Style::Close);
-//     // window.setView(sf::View(sf::FloatRect(0, 0, CELL_SIZE * MAP_W, 40 + CELL_SIZE * MAP_H)));
-
-//     // Show the start screen
-//     window.clear();
-//     std::cout << "show_start(window)";
-//     StartScreen(window);
-// }
 
 bool Game::screen_clicked(sf::Vector2i mousePos)
 {
