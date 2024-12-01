@@ -142,6 +142,7 @@ void Game::WinScreen(sf::RenderWindow &window)
         // Clear the window, draw the image, and display
         window.clear();     // Clear the window before drawing the new frame
         window.draw(start); // Draw the sprite (image)
+        man.draw_score(window);
         window.display();   // Display the window contents
     }
 }
@@ -187,6 +188,7 @@ void Game::LoseScreen(sf::RenderWindow &window)
         // Clear the window, draw the image, and display
         window.clear();     // Clear the window before drawing the new frame
         window.draw(start); // Draw the sprite (image)
+        man.draw_score(window);
         window.display();   // Display the window contents
     }
 }
