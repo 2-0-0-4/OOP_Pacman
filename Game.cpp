@@ -29,7 +29,6 @@ void Game::show_start()
 //     StartScreen(window);
 // }
 
-
 bool Game::screen_clicked(sf::Vector2i mousePos)
 {
 
@@ -96,7 +95,7 @@ void Game::StartScreen(sf::RenderWindow &window)
 
 bool Game::restart_button(sf::Vector2i mousePos)
 {
-    std::cout<<"here...";
+    std::cout << "here...";
     return mousePos.x >= 270 && mousePos.x <= 560 && // might need to change based on buton loco
            mousePos.y >= 600 && mousePos.y <= 730;
 }
@@ -130,11 +129,11 @@ void Game::WinScreen(sf::RenderWindow &window)
             if (event.type == sf::Event::MouseButtonPressed)
             {
                 bool check = restart_button(sf::Mouse::getPosition(window));
-                std::cout<<check;
+                std::cout << check;
                 if (check) //
                 {
                     man.reset();
-                    StartScreen(window);  // Transition to the next screen
+                    StartScreen(window); // Transition to the next screen
                     return;
                 }
             }
@@ -178,7 +177,7 @@ void Game::LoseScreen(sf::RenderWindow &window)
                 if (restart_button(sf::Mouse::getPosition(window))) //
                 {
                     man.reset();
-                    StartScreen(window);   
+                    StartScreen(window);
                     // StartScreen(window); // Transition to the next screen
                     return;
                 }
@@ -194,7 +193,7 @@ void Game::LoseScreen(sf::RenderWindow &window)
 
 void Game::init(sf::RenderWindow &window)
 {
-    std::cout<<"in init..";
+    std::cout << "in init..";
     // similar to lag, used to make the game framerate-independent.
     std::chrono::time_point<std::chrono::steady_clock> previous_time;
     // SFML thing. Stores events, I think.
@@ -243,7 +242,7 @@ void Game::init(sf::RenderWindow &window)
         man.draw(window);
         // man.setPosition(160, 176);
         pacman_maze.draw_maze(MAP_H, MAP_W, healths, poisons, window, false); // Draw the map
-        status = man.movement(pacman_maze, healths, poisons);
+        status = man.movement(pacman_maze, healths, poisons, ghosts);
         if (status == 1)
         {
             std::cout << "game over screen pls" << std::endl;
@@ -273,5 +272,3 @@ void Game::update(sf::RenderWindow &window)
     poisons.draw(window);
     man.draw_data(window);
 }
-
-

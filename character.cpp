@@ -14,16 +14,25 @@ void Character::draw(sf::RenderWindow &temp)
     // player.setPosition(position.x, position.y);
     sf::Texture texture;
     texture.loadFromFile("scroll_sprite.png");
-    sf::Sprite player;
     player.setTexture(texture);
     player.setScale(sf::Vector2f(0.035f, 0.035f));
     player.setPosition(position.x, position.y);
     temp.draw(player);
 }
 
+Vector2f Character::getPosition()
+{
+    return position;
+}
+
 void Character::respawn()
 {
     position = {160, 176};
+}
+
+sf::FloatRect Character::getGlobalBounds()
+{
+    return player.getGlobalBounds();
 }
 
 void Character::setPosition(int x, int y)
@@ -95,45 +104,47 @@ void Pacman::increase_lives()
     }
 }
 
-int Pacman::movement(Maze &maze, Health &temp_health, Poison &temp_poison)
+int Pacman::movement(Maze &maze, Health &temp_health, Poison &temp_poison, std::vector<Ghost> ghosts)
 {
     int status = 0;
-
     // the 4 possible wallls when pacman is moving
     bool walls[4];
     walls[0] = wall_collision(speed + position.x, position.y, 21, 21, maze); // right
     walls[1] = wall_collision(position.x - speed, position.y, 21, 21, maze); // left
     walls[2] = wall_collision(position.x, position.y - speed, 21, 21, maze); // up
     walls[3] = wall_collision(position.x, speed + position.y, 21, 21, maze); // down
-
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
     {
         if (walls[0] == false) // moving right and theres no wall, then keep moving towards the right
         {
             direction = 0;
+            // bool check = true;
         }
     }
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
+    else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
     {
         if (walls[1] == false)
         {
             direction = 1;
+            // bool check = true;
         }
     }
 
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
+    else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
     {
         if (walls[2] == false)
         {
             direction = 2;
+            // bool check = true;
         }
     }
 
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
+    else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
     {
         if (walls[3] == false)
         {
             direction = 3;
+            // bool check = true;
         }
     }
 
@@ -182,12 +193,18 @@ int Pacman::movement(Maze &maze, Health &temp_health, Poison &temp_poison)
         {
             status = 2;
         }
-        // std::cout<<"here"<<std::endl;
     }
-
     if (temp_poison.find_in_array(position.x / 16, position.y / 16))
     { // poison is there
         temp_poison.remove_from_array(position.x / 16, position.y / 16);
+        score -= 20;
+        if (score < 0)
+            status = 1;
+    }
+    if (ghosts[0].getGlobalBounds().intersects(player.getGlobalBounds()) ||
+        ghosts[1].getGlobalBounds().intersects(player.getGlobalBounds()) ||
+        ghosts[2].getGlobalBounds().intersects(player.getGlobalBounds()))
+    {
         status = died();
     }
     // 16 is our cells size and 21 is the width of our maze.
@@ -196,15 +213,16 @@ int Pacman::movement(Maze &maze, Health &temp_health, Poison &temp_poison)
 
 int Pacman::died()
 {
+    cout << lives;
     if (lives == 0)
     {
-        std::cout << "game over!" << std::endl;
+        // std::cout << "game over!" << std::endl;
         return 1;
     }
     else
     {
-        cout << "lives - 1" << endl;
         lives -= 1;
+        cout << "lives - 1: " << lives << endl;
         respawn();
         return 0;
     }
@@ -238,14 +256,6 @@ void Pacman::draw_data(sf::RenderWindow &temp)
         sprite.setPosition(heart_loco[i][0], heart_loco[i][1]);
         temp.draw(sprite);
     }
-}
-// Position Pacman::set_position(){
-// 	position={120,168};
-// }
-sf::Vector2f Pacman::get_position()
-{
-
-    return position;
 }
 
 int Pacman::get_direction()
@@ -282,10 +292,8 @@ Ghost::Ghost(int id)
 
 void Ghost::draw_ghost(sf::RenderWindow &i_window)
 {
-    sf::CircleShape ghostTop(8.f);
-    sf::RectangleShape ghostBottom(sf::Vector2f(16.f, 8.f));
     sf::Texture texture;
-    sf::Sprite player;
+    // sf::Sprite player;
     // colors and positions based on the ghost's ID
     switch (ghost_id)
     {
@@ -328,7 +336,7 @@ void Ghost::draw_ghost(sf::RenderWindow &i_window)
 // // }
 // void Ghost::find_pacman(Pacman &i_pacman) //not needed
 // {
-//     target = i_pacman.get_position();
+//     target = i_pacman.getPosition();
 // }
 
 // void Ghost::ghost_movement(Pacman& i_pacman, Maze &maze) {
@@ -471,16 +479,16 @@ int Ghost::ghost_movement(Pacman &i_pacman, Maze &maze, int last_direction)
     }
 
     // route based on the ghost's ID
-    // target = i_pacman.get_position();
+    // target = i_pacman.getPosition();
     find_target(i_pacman);
     int dx = target.x - position.x;
     int dy = target.y - position.y;
-    cout << "dx: " << dx << ", dy: " << dy << endl;
+    // cout << "dx: " << dx << ", dy: " << dy << endl;
 
     if (dy == 0 && dy == 0)
     {
         // i_pacman.died();
-        cout << "DEADDDDDDDDDDD";
+        // cout << "DEADDDDDDDDDDD";
     }
 
     if (std::abs(dx) >= std::abs(dy))
@@ -594,13 +602,13 @@ void Ghost::find_target(Pacman &i_pacman)
     switch (ghost_id)
     {
     case 0:
-    {                                     // red ghost will chase Pacman directly
-        target = i_pacman.get_position(); // Get Pacman's position as the target
+    {                                    // red ghost will chase Pacman directly
+        target = i_pacman.getPosition(); // Get Pacman's position as the target
         break;
     }
     case 1:
-    {                                     // pink ghost (chase 4th cell in front of pacman)
-        target = i_pacman.get_position(); //  pacman's position first
+    {                                    // pink ghost (chase 4th cell in front of pacman)
+        target = i_pacman.getPosition(); //  pacman's position first
 
         // get pcmans current direction to see which way to go
         switch (i_pacman.get_direction())
@@ -622,7 +630,7 @@ void Ghost::find_target(Pacman &i_pacman)
     }
     case 2:
     { // blue ghost (chase 2nd cell in front of pacman)
-        target = i_pacman.get_position();
+        target = i_pacman.getPosition();
 
         switch (i_pacman.get_direction())
         {
@@ -661,7 +669,7 @@ void Ghost::find_target(Pacman &i_pacman)
 //         case 3: opp_direction = 2; break;
 //     }
 
-//     target = i_pacman.get_position();
+//     target = i_pacman.getPosition();
 //     int dx = target.x - position.x;
 //     int dy = target.y - position.y;
 

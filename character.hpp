@@ -5,22 +5,23 @@
 #include "Maze.hpp"
 #include <iostream>
 
-struct Position
-{
-    int x;
-    int y;
+// struct Position
+// {
+//     int x;
+//     int y;
 
-    bool operator==(const Position &i_position)
-    {
-        return this->x == i_position.x && this->y == i_position.y;
-    }
-};
-
+//     bool operator==(const Position &i_position)
+//     {
+//         return this->x == i_position.x && this->y == i_position.y;
+//     }
+// };
+class Ghost;
 // Base class: Character
 class Character
 {
 protected:
-    sf::CircleShape player;             // Represents the character shape
+    // sf::CircleShape player
+    sf::Sprite player;             // Represents the character shape
     sf::Vector2f position = {160, 176}; // Initial position
     int speed = 2;                      // Movement speed
     int direction = 0;                  // which direction its gonna go in
@@ -30,6 +31,8 @@ public:
     virtual void respawn();
     bool wall_collision(int pos_x, int pos_y, int MAP_W, int MAP_H, const Maze &maze);
     void setPosition(int x, int y);
+    sf::Vector2f getPosition();
+    sf::FloatRect getGlobalBounds();
 };
 
 // Derived class: Pacman
@@ -45,10 +48,10 @@ public:
     // int speed = 2;
     void draw_data(sf::RenderWindow &temp);
     void increase_lives();
-    int movement(Maze &maze, Health &temp_health, Poison &temp_poison);
+    int movement(Maze &maze, Health &temp_health, Poison &temp_poison,std::vector<Ghost> ghosts);
     int died();
     // Position get_position();
-    sf::Vector2f get_position();
+    // sf::Vector2f get_position();
     int get_direction();
     void reset();
     // Position set_position();
@@ -67,11 +70,13 @@ private:
 public:
     Ghost(int id);
     void draw_ghost(sf::RenderWindow &i_window);
-    void set_position(int pos_x, int pos_y);
+    // void set_position(int pos_x, int pos_y);
     // void find_pacman(Pacman &i_pacman);
     void find_target(Pacman &i_pacman);
     // void ghost_movement( Pacman& i_pacman,Maze &maze);
     int ghost_movement(Pacman &i_pacman, Maze &maze, int last_direction);
     // int random_d( Pacman& i_pacman,Maze &maze, int last_direction);
 };
+
+
 #endif
