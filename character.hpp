@@ -54,6 +54,7 @@ public:
     // sf::Vector2f get_position();
     int get_direction();
     void reset();
+    void draw_score(sf::RenderWindow &window);
     // Position set_position();
 };
 
