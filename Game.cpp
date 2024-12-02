@@ -1,6 +1,7 @@
 #include "Game.hpp"
 #include <iostream>
-// g++ *.cpp -I"C:\mingw_dev_lib\include" -L"C:\mingw_dev_lib\lib" -lsfml-graphics -lsfml-window -lsfml-system -o main.exe
+#include <SFML/Audio.hpp>
+// g++ *.cpp -I"C:\mingw_dev_lib\include" -L"C:\mingw_dev_lib\lib" -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio -o main.exe
 //  const int CELL_SIZE= 16;
 //  const int MAP_W= 21;
 //  const int MAP_H=21;
@@ -181,6 +182,16 @@ void Game::init(sf::RenderWindow &window)
     std::chrono::time_point<std::chrono::steady_clock> previous_time;
     // SFML thing. Stores events, I think.
     sf::Event event;
+
+    // sf::Event event;
+    sf::Music backgroundMusic;
+
+    if (!backgroundMusic.openFromFile("sound2.wav")) {
+        std::cerr << "Failed to load background music!" << std::endl;
+        
+    }
+    backgroundMusic.setLoop(true);  // Loop the music
+    backgroundMusic.play();
     
     srand(static_cast<unsigned>(time(0)));
 
