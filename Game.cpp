@@ -2,10 +2,7 @@
 #include <SFML/Audio.hpp>
 #include <iostream>
 // g++ *.cpp -I"C:\mingw_dev_lib\include" -L"C:\mingw_dev_lib\lib" -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio -o main.exe
-//  const int CELL_SIZE= 16;
-//  const int MAP_W= 21;
-//  const int MAP_H=21;
-//  const int SCREEN_RESIZE=2;
+
 sf::Music backgroundMusic;
 
 
