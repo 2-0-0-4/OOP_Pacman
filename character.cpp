@@ -28,6 +28,12 @@ Vector2f Character::getPosition()
 void Character::respawn()
 {
     position = {160, 176};
+     sf::Music lose_sound;
+    if (!lose_sound.openFromFile("lose2.wav")) {
+        std::cerr << "Failed to load " << std::endl;
+    }
+    lose_sound.play();
+    sf::sleep(sf::seconds(2));
 }
 
 sf::FloatRect Character::getGlobalBounds()
