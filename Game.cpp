@@ -1,30 +1,22 @@
 #include "Game.hpp"
-#include <SFML/Audio.hpp>
 #include <iostream>
-// g++ *.cpp -I"C:\mingw_dev_lib\include" -L"C:\mingw_dev_lib\lib" -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio -o main.exe
-
-sf::Music backgroundMusic;
-
-
- 
+// g++ *.cpp -I"C:\mingw_dev_lib\include" -L"C:\mingw_dev_lib\lib" -lsfml-graphics -lsfml-window -lsfml-system -o main.exe
+//  const int CELL_SIZE= 16;
+//  const int MAP_W= 21;
+//  const int MAP_H=21;
+//  const int SCREEN_RESIZE=2;
 
 Game::Game() {};
 Game::~Game() {};
 
 void Game::show_start()
-{   sf::Music start_sound;
-    if (!start_sound.openFromFile("pacman_beginning.wav")) {
-        std::cerr << "Failed to load " << std::endl;
-    }
-    start_sound.play();
+{
 
     sf::RenderWindow window(sf::VideoMode(CELL_SIZE * MAP_W * SCREEN_RESIZE, (40 + CELL_SIZE * MAP_H) * SCREEN_RESIZE), "Pac-Man", sf::Style::Close);
     window.setView(sf::View(sf::FloatRect(0, 0, CELL_SIZE * MAP_W, 40 + CELL_SIZE * MAP_H)));
     // Show the start screen
     StartScreen(window);
-    
 }
-
 
 
 bool Game::screen_clicked(sf::Vector2i mousePos)
@@ -37,9 +29,6 @@ bool Game::screen_clicked(sf::Vector2i mousePos)
 void Game::StartScreen(sf::RenderWindow &window)
 {
 
-    // sf::RenderWindow window(sf::VideoMode(CELL_SIZE * MAP_W * SCREEN_RESIZE, (40 + CELL_SIZE * MAP_H) * SCREEN_RESIZE), "Pac-Man", sf::Style::Close);
-    // // making the window to fit the maze
-    // window.setView(sf::View(sf::FloatRect(0, 0, CELL_SIZE * MAP_W, 40 + CELL_SIZE * MAP_H)));
     window.clear();
     sf::Texture start_screen;
 
@@ -57,12 +46,6 @@ void Game::StartScreen(sf::RenderWindow &window)
     sf::Sprite start(start_screen);
     start.setScale(sf::Vector2f(0.4f, 0.4f));
 
-    // start.setScale(window.getSize().x / float(start.getLocalBounds().width),
-    //                window.getSize().y / float(start.getLocalBounds().height));
-
-    // position the image  in the center of the window
-    //  start.setPosition((window.getSize().x - start.getLocalBounds().width) / 2,
-    //                    (window.getSize().y - start.getLocalBounds().height) / 2);
 
     while (window.isOpen())
     {
@@ -87,7 +70,6 @@ void Game::StartScreen(sf::RenderWindow &window)
         // Clear the window, draw the image, and display
         window.clear();     // Clear the window before drawing the new frame
         window.draw(start); // Draw the sprite (image)
-
         window.display();   // Display the window contents
     }
 }
@@ -100,12 +82,7 @@ bool Game::restart_button(sf::Vector2i mousePos)
 }
 
 void Game::WinScreen(sf::RenderWindow &window)
-{   backgroundMusic.stop();
-    sf::Music win_sound;
-    if (!win_sound.openFromFile("win.wav")) {
-        std::cerr << "Failed to load " << std::endl;
-    }
-    win_sound.play();
+{
     sf::Texture start_screen;
 
     // Try to load the image
@@ -118,7 +95,7 @@ void Game::WinScreen(sf::RenderWindow &window)
     {
         std::cout << "Image loaded successfully!" << std::endl;
     }
-    
+
     sf::Sprite start(start_screen);
     start.setScale(sf::Vector2f(0.4f, 0.4f));
     while (window.isOpen())
@@ -147,18 +124,12 @@ void Game::WinScreen(sf::RenderWindow &window)
         window.clear();     // Clear the window before drawing the new frame
         window.draw(start); // Draw the sprite (image)
         man.draw_score(window);
-        
         window.display();   // Display the window contents
     }
 }
 
 void Game::LoseScreen(sf::RenderWindow &window)
-{   backgroundMusic.stop();
-    sf::Music lose_sound;
-    if (!lose_sound.openFromFile("lose2.wav")) {
-        std::cerr << "Failed to load " << std::endl;
-    }
-    lose_sound.play();
+{
     sf::Texture start_screen;
 
     // Try to load the image
@@ -171,7 +142,7 @@ void Game::LoseScreen(sf::RenderWindow &window)
     {
         std::cout << "Image loaded successfully!" << std::endl;
     }
-    man.draw_data(window);
+
     sf::Sprite start(start_screen);
     start.setScale(sf::Vector2f(0.4f, 0.4f));
     while (window.isOpen())
@@ -186,7 +157,7 @@ void Game::LoseScreen(sf::RenderWindow &window)
             if (event.type == sf::Event::MouseButtonPressed)
             {
                 if (restart_button(sf::Mouse::getPosition(window))) //
-                {   lose_sound.stop();
+                {
                     man.reset();
                     StartScreen(window);
                     // StartScreen(window); // Transition to the next screen
@@ -208,35 +179,19 @@ void Game::init(sf::RenderWindow &window)
     std::cout << "in init..";
     // similar to lag, used to make the game framerate-independent.
     std::chrono::time_point<std::chrono::steady_clock> previous_time;
+    // SFML thing. Stores events, I think.
+    sf::Event event;
     
-    // sf::Event event;
-    if (!backgroundMusic.openFromFile("sound2.wav")) {
-        std::cerr << "Failed to load background music!" << std::endl;
-        
-    }
-    backgroundMusic.setLoop(true);  // Loop the music
-    backgroundMusic.setVolume(40);
-    backgroundMusic.play();
-    
-    // sf::RenderWindow window(sf::VideoMode(CELL_SIZE * MAP_W * SCREEN_RESIZE, (40 + CELL_SIZE * MAP_H) * SCREEN_RESIZE), "Pac-Man", sf::Style::Close);
-    // // making the window to fit the maze
-    // window.setView(sf::View(sf::FloatRect(0, 0, CELL_SIZE * MAP_W, 40 + CELL_SIZE * MAP_H)));
-
-    // generating a random seed.
     srand(static_cast<unsigned>(time(0)));
 
-    // // get the current time and store it in a variable.
+    // get the current time and store it in a variable.
     previous_time = std::chrono::steady_clock::now();
-    // man.reset();
     std::vector<Ghost> ghosts;
     ghosts.push_back(Ghost(0)); // red Ghost
     ghosts.push_back(Ghost(1)); // pink Ghost
     ghosts.push_back(Ghost(2)); // blue Ghost
-    // Pacman man;
-    // Ghost ghost;
     window.setFramerateLimit(100);
     pacman_maze.draw_maze(MAP_H, MAP_W, healths, poisons, window, true); // Draw the map
-    // man.reset();
     int last_direction = 5;
     int status = 0;
     while (window.isOpen())
@@ -255,7 +210,6 @@ void Game::init(sf::RenderWindow &window)
         }
         for (size_t i = 0; i < ghosts.size(); i++)
         {
-            // ghosts[i].ghost_movement(man, pacman_maze);  // call ghost_movement for each ghost
             last_direction = ghosts[i].ghost_movement(man, pacman_maze, last_direction); // call ghost_movement for each ghost
         }
         man.draw(window);
@@ -265,14 +219,12 @@ void Game::init(sf::RenderWindow &window)
         if (status == 1)
         {
             std::cout << "game over screen pls" << std::endl;
-            
             LoseScreen(window);
             status = 0;
         }
         else if (status == 2)
         {
             std::cout << "You win screen" << std::endl;
-            
             WinScreen(window);
             status = 0;
         }
@@ -285,9 +237,7 @@ void Game::init(sf::RenderWindow &window)
 
 void Game::update(sf::RenderWindow &window)
 {
-    
     healths.draw(window, sf::Color::Green);
     poisons.draw(window);
     man.draw_data(window);
 }
-
