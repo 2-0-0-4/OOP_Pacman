@@ -211,16 +211,13 @@ int Pacman::movement(Maze &maze, Health &temp_health, Poison &temp_poison, std::
 
 int Pacman::died()
 {
-    cout << lives;
     if (lives == 0)
     {
-        // std::cout << "game over!" << std::endl;
         return 1;
     }
     else
     {
         lives -= 1;
-        cout << "lives - 1: " << lives << endl;
         respawn();
         return 0;
     }
@@ -337,7 +334,6 @@ void Ghost::draw_ghost(sf::RenderWindow &i_window)
     player.setPosition(position.x, position.y);
     i_window.draw(player);
 }
-
 
 int Ghost::ghost_movement(Pacman &i_pacman, Maze &maze, int last_direction)
 {
@@ -490,6 +486,7 @@ void Ghost::find_target(Pacman &i_pacman)
             break;
         case 1: // Up
             target.y -= 16 * 2;
+            break;
         case 2: // Left
             target.x -= 16 * 2;
             break;
@@ -501,4 +498,3 @@ void Ghost::find_target(Pacman &i_pacman)
     }
     }
 }
-
