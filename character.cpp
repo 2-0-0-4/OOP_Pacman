@@ -9,9 +9,6 @@ using namespace std;
 void Character::draw(sf::RenderWindow &temp)
 {
 
-    // sf::CircleShape player(8.f);
-    // player.setFillColor(sf::Color::Yellow);
-    // player.setPosition(position.x, position.y);
     sf::Texture texture;
     texture.loadFromFile("scroll_sprite.png");
     player.setTexture(texture);
@@ -188,7 +185,6 @@ int Pacman::movement(Maze &maze, Health &temp_health, Poison &temp_poison, std::
 
     if (temp_health.find_in_array(position.x / 16, position.y / 16))
     { // health is there
-        // maze.maze_sketch[position.y/16][position.x/16] = " ";
         score += 50;
         temp_health.remove_from_array(position.x / 16, position.y / 16);
         if (temp_health.is_empty() == true)
@@ -319,8 +315,6 @@ Ghost::Ghost(int id)
 void Ghost::draw_ghost(sf::RenderWindow &i_window)
 {
     sf::Texture texture;
-    // sf::Sprite player;
-    // colors and positions based on the ghost's ID
     switch (ghost_id)
     {
     case 0: // red Ghost Mikaal
